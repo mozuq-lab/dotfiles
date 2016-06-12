@@ -1,0 +1,15 @@
+[user]
+    name = pepo-le
+[user]
+    email = hello@pepo-le.com
+[core]
+    autocrlf = true
+    excludesfile = ~/.gitignore
+    editor = vim
+    quotepath = false
+[alias]
+    cm = commit
+    ch = checkout
+    br = branch
+    st = status
+    diffn = diff --name-only
