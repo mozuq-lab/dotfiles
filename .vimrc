@@ -23,13 +23,21 @@ nnoremap <silent> ,tt :<C-u>tabnew<CR>
 " ---------------------------------------
 " Encoding
 " ---------------------------------------
-autocmd FileType js :set fileencoding=utf-8
+autocmd FileType javascript :set fileencoding=utf-8
 autocmd FileType css :set fileencoding=utf-8
 autocmd FileType scss :set fileencoding=utf-8
 autocmd FileType html :set fileencoding=utf-8
 autocmd FileType xml :set fileencoding=utf-8
 autocmd FileType php :set fileencoding=utf-8
 autocmd FileType ctp :set fileencoding=utf-8
+autocmd FileType ejs :set fileencoding=utf-8
+
+
+
+" ---------------------------------------
+" FileType
+" ---------------------------------------
+autocmd BufRead,BufNewFile *.ejs :set filetype=ejs
 
 
 
@@ -68,6 +76,7 @@ call dein#add('tomtom/tcomment_vim')
 call dein#add('mattn/emmet-vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('othree/html5.vim')
+call dein#add('nikvdp/ejs-syntax')
 call dein#add('hail2u/vim-css3-syntax')
 call dein#add('jQuery')
 call dein#add('othree/yajs.vim')
