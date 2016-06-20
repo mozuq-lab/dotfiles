@@ -3,5 +3,5 @@ for f in .??*
 do
     [ "$f" = ".git" ] && continue
 
-    ln -s "$f" "$HOME"/"$f"
+    ln -s "$HOME"/dotfiles/"$f" "$HOME"/"$f"
 done
