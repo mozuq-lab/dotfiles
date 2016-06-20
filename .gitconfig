@@ -3,7 +3,7 @@
 [user]
     email = hello@pepo-le.com
 [core]
-    autocrlf = true
+    autocrlf = input
     excludesfile = ~/.gitignore
     editor = vim
     quotepath = false
