@@ -1,1 +1,3 @@
-.vim/*
+/.vim/*
+
+node_modules/*
