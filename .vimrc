@@ -14,6 +14,8 @@ set list
 set scrolloff=10
 set listchars=tab:^\ ,trail:_
 set whichwrap=b,s,<,>,[,],~
+set timeout timeoutlen=3000 ttimeoutlen=100
+
 nnoremap / /\v
 "tabnew
 nnoremap <silent> ,tt :<C-u>tabnew<CR>
@@ -87,6 +89,9 @@ call dein#add('jQuery')
 call dein#add('othree/yajs.vim')
 call dein#add('tpope/vim-fugitive')
 call dein#add('scrooloose/syntastic')
+if !has('win32') && !has('mac')
+    call dein#add('vim-scripts/fcitx.vim')
+endif
 
 call dein#end()
 
