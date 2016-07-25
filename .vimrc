@@ -18,7 +18,7 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 
 nnoremap / /\v
 "tabnew
-nnoremap <silent> ,tt :<C-u>tabnew<CR>
+nnoremap <silent> ,t :<C-u>tabnew<CR>
 
 
 
