@@ -26,8 +26,8 @@ nnoremap <silent> ,tt :<C-u>tabnew<CR>
 :command Sutf set fenc=utf-8
 :command Scp set fenc=cp932
 :command Seuc set fenc=euc-jp
-:command Suni set ft=unix
-:command Sdos set ft=dos
+:command Suni set ff=unix
+:command Sdos set ff=dos
 autocmd FileType javascript :set fileencoding=utf-8
 autocmd FileType css :set fileencoding=utf-8
 autocmd FileType scss :set fileencoding=utf-8
