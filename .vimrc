@@ -14,6 +14,7 @@ set list
 set scrolloff=10
 set listchars=tab:^\ ,trail:_
 set whichwrap=b,s,<,>,[,],~
+set laststatus=2
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 nnoremap / /\v
