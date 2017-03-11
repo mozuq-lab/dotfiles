@@ -92,7 +92,8 @@ call dein#add('othree/yajs.vim')
 call dein#add('tpope/vim-fugitive')
 call dein#add('scrooloose/syntastic')
 if !has('win32') && !has('mac')
-    call dein#add('vim-scripts/fcitx.vim')
+    " fcitxでのノーマルモードIME対策
+    "call dein#add('vim-scripts/fcitx.vim')
 endif
 
 call dein#end()
