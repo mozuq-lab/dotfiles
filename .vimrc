@@ -16,7 +16,13 @@ set listchars=tab:^\ ,trail:_
 set whichwrap=b,s,<,>,[,],~
 set laststatus=2
 set hlsearch
+set iminsert=0 imsearch=0
 set timeout timeoutlen=3000 ttimeoutlen=100
+
+if has('multi_byte_ime') || has('xim')
+    " 挿入モードのIME状態を記憶しないようにする
+    "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+endif
 
 nnoremap / /\v
 "tabnew
