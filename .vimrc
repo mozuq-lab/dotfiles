@@ -17,6 +17,7 @@ set whichwrap=b,s,<,>,[,],~
 set laststatus=2
 set hlsearch
 set iminsert=0 imsearch=0
+set mouse=
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 if has('multi_byte_ime') || has('xim')
