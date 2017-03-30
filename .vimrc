@@ -56,12 +56,11 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 " Color
-colorscheme desert
+colorscheme elflord
 set t_Co=256
 
 " Other
 set number
-set cursorline
 set scrolloff=10
 set whichwrap=b,s,<,>,[,],~
 
