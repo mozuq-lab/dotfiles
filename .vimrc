@@ -55,6 +55,10 @@ if has('multi_byte_ime') || has('xim')
   "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 endif
 
+" Color
+colorscheme desert
+set t_Co=256
+
 " Other
 set number
 set scrolloff=10
@@ -92,7 +96,7 @@ call dein#add('Shougo/vimfiler')
 call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
-call dein#add('tpope/vim-fugitive')
+call dein#add('nathanaelkane/vim-indent-guides')
 if !has('win32') && !has('mac')
   " fcitxでのノーマルモードIME対策
   call dein#add('vim-scripts/fcitx.vim')
@@ -103,15 +107,14 @@ call dein#add('xolox/vim-misc')
 call dein#add('xolox/vim-session')
 
 " Coding
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
 call dein#add('tpope/vim-surround')
 call dein#add('tomtom/tcomment_vim')
 call dein#add('mattn/emmet-vim')
-call dein#add('Shougo/neocomplete.vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('jiangmiao/auto-pairs')
-call dein#add('Yggdroot/indentLine')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
 
 " Syntax
 call dein#add('scrooloose/syntastic')
@@ -120,6 +123,10 @@ call dein#add('nikvdp/ejs-syntax')
 call dein#add('hail2u/vim-css3-syntax')
 call dein#add('othree/yajs.vim')
 call dein#add('jQuery')
+
+" Git
+call dein#add('tpope/vim-fugitive')
+call dein#add('airblade/vim-gitgutter')
 "" -------------------------------
 call dein#end()
 
@@ -208,6 +215,11 @@ let g:user_emmet_settings = {
 \       'lang': "ja"
 \   }
 \ }
+
+" vim-indent-guides
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=2
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=3
 
 " Vim-Session
 " 現在のディレクトリ直下の .vimsessions/ を取得
