@@ -6,7 +6,7 @@ set backupdir=$HOME/.vim/backup
 set undodir=$HOME/.vim/undo
 set viminfo+=n~/.vim/viminfo
 
-" Basic Encoding
+" Encoding
 set encoding=utf-8
 set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
 set fileformats=unix,dos,mac
@@ -29,7 +29,7 @@ nnoremap / /\v
 
 " Tab & Trailing Space
 set list
-set listchars=tab:^\ ,trail:_,extends:≫,precedes:≪,nbsp:%
+set listchars=tab:^\ ,trail:_,extends:≫,precedes:≪
 
 " 全角スペースをハイライト
 highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
@@ -61,6 +61,7 @@ set t_Co=256
 
 " Other
 set number
+set cursorline
 set scrolloff=10
 set whichwrap=b,s,<,>,[,],~
 
@@ -97,9 +98,9 @@ call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
-if !has('win32') && !has('mac')
+if has('unix')
   " fcitxでのノーマルモードIME対策
-  call dein#add('vim-scripts/fcitx.vim')
+  "call dein#add('vim-scripts/fcitx.vim')
 endif
 
 " Session
