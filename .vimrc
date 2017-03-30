@@ -166,6 +166,12 @@ let mapleader = ","
 " ,のデフォルトの機能は、\で使えるように退避
 noremap \ ,
 
+" 矢印キーでは表示行単位で行移動する
+nmap <UP> gk
+nmap <DOWN> gj
+vmap <UP> gk
+vmap <DOWN> gj
+
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
