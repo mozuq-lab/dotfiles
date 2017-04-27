@@ -12,3 +12,7 @@ endif
 if has('win32')
   set guifont=MS_Gothic:h11
 endif
+
+if has('unix')
+  set guifont=Monospace\ 11
+endif
