@@ -59,6 +59,12 @@ endif
 colorscheme elflord
 set t_Co=256
 
+" Windowsでpythonインターフェイスを有効にする
+if has('win32')
+  set runtimepath+=$VIM
+  set pythonthreedll=$VIM/python3/python35.dll
+endif
+
 " Other
 set number
 set scrolloff=10
@@ -115,6 +121,7 @@ call dein#add('tomtom/tcomment_vim')
 call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('jiangmiao/auto-pairs')
+call dein#add('editorconfig/editorconfig-vim')
 
 " Syntax
 call dein#add('scrooloose/syntastic')
