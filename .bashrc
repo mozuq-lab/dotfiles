@@ -1,5 +1,3 @@
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-
 alias sudo='sudo -E '
 alias ls='ls -CF --show-control-chars --color=auto'
 alias ll='ls -AlFh --show-control-chars --color=auto'
