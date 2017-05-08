@@ -13,3 +13,5 @@
     br = branch
     st = status
     diffn = diff --name-only
+[push]
+    default = simple
