@@ -129,7 +129,7 @@ call dein#add('othree/html5.vim')
 call dein#add('nikvdp/ejs-syntax')
 call dein#add('hail2u/vim-css3-syntax')
 call dein#add('othree/yajs.vim')
-call dein#add('jQuery')
+call dein#add('vim-scripts/jQuery')
 
 " Git
 call dein#add('tpope/vim-fugitive')
