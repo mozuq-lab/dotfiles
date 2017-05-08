@@ -9,7 +9,3 @@ do
 
     ln -s "$HOME"/dotfiles/"$f" "$HOME"/"$f"
 done
-
-mkdir "$HOME/.vim/backup"
-mkdir "$HOME/.vim/swap"
-mkdir "$HOME/.vim/undo"

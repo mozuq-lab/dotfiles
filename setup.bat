@@ -9,7 +9,3 @@ for %%i in (.*) do (
         mklink %USERPROFILE%\%%i %USERPROFILE%\dotfiles\%%i
     )
 )
-
-mkdir %USERPROFILE%\.vim\backup
-mkdir %USERPROFILE%\.vim\swap
-mkdir %USERPROFILE%\.vim\undo
