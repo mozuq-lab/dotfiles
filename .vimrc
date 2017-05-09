@@ -45,6 +45,11 @@ set laststatus=2
 " Mouse
 set mouse=
 
+" PasteMode
+set pastetoggle=<F10>
+" PasteModeを自動で抜ける
+autocmd InsertLeave * set nopaste
+
 " マッピング待ちとキーコード待ちの時間
 set timeout timeoutlen=3000 ttimeoutlen=100
 
