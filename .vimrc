@@ -125,7 +125,7 @@ call dein#add('tpope/vim-surround')
 call dein#add('tomtom/tcomment_vim')
 call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
-call dein#add('jiangmiao/auto-pairs')
+"call dein#add('jiangmiao/auto-pairs')
 call dein#add('editorconfig/editorconfig-vim')
 
 " Syntax
@@ -182,6 +182,15 @@ nmap <UP> gk
 nmap <DOWN> gj
 vmap <UP> gk
 vmap <DOWN> gj
+
+" 括弧などの補完
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap (<Enter> ()<LEFT><CR><ESC><S-o>
+inoremap { {}<LEFT>
+inoremap {<Enter> {}<LEFT><CR><ESC><S-o>
 
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
