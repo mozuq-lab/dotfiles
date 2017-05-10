@@ -220,6 +220,7 @@ nnoremap <silent> <Leader>v :<C-u>VimFiler<CR>
 nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
 
 " yankround
+let g:yankround_dir=$HOME . '/.vim/yankround'
 nmap p <Plug>(yankround-p)
 nmap P <Plug>(yankround-P)
 nmap gp <Plug>(yankround-gp)
