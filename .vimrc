@@ -10,6 +10,7 @@ set viminfo+=n~/.vim/viminfo
 set encoding=utf-8
 "set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
 set fileformats=unix,dos,mac
+set ambiwidth=double
 "set noeol nofixeol
 scriptencoding utf-8
 
@@ -29,7 +30,7 @@ nnoremap / /\v
 
 " Tab & Trailing Space
 set list
-set listchars=tab:^\ ,trail:_,extends:≫,precedes:≪
+set listchars=tab:^\ ,trail:_,extends:>,precedes:<
 
 " 全角スペースをハイライト
 highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
