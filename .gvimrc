@@ -3,6 +3,7 @@ set viminfo+=n~/.vim/viminfo
 set lines=44
 set columns=150
 set cursorline
+set mousemodel=popup
 
 " IMEオンでカーソルの色を変える（Linuxでは不完全）
 if has('multi_byte_ime') || has('xim')

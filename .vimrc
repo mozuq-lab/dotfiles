@@ -43,7 +43,7 @@ augroup END
 set laststatus=2
 
 " Mouse
-set mouse=
+set mouse=a
 
 " PasteMode
 set pastetoggle=<F10>
