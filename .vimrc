@@ -45,6 +45,10 @@ set laststatus=2
 " Mouse
 set mouse=a
 
+" yankでクリップボードを使う
+set clipboard&
+set clipboard^=unnamedplus
+
 " PasteMode
 set pastetoggle=<F10>
 " PasteModeを自動で抜ける
