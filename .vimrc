@@ -10,7 +10,6 @@ set viminfo+=n~/.vim/viminfo
 set encoding=utf-8
 "set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
 set fileformats=unix,dos,mac
-set ambiwidth=double
 "set noeol nofixeol
 scriptencoding utf-8
 
@@ -75,6 +74,8 @@ endif
 set number
 set scrolloff=10
 set whichwrap=b,s,<,>,[,],~
+set ambiwidth=double
+set backspace=2 "indent,eol,start
 
 
 
