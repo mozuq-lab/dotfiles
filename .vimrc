@@ -191,15 +191,15 @@ vmap <UP> gk
 vmap <DOWN> gj
 
 " 括弧などの補完
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
+inoremap "" ""<LEFT>
+inoremap '' ''<LEFT>
+inoremap [[ []<LEFT>
+inoremap (( ()<LEFT>
 inoremap () ()
-inoremap (<Enter> ()<LEFT><CR><ESC><S-o>
-inoremap { {}<LEFT>
+inoremap ((<Enter> ()<LEFT><CR><ESC><S-o>
+inoremap {{ {}<LEFT>
 inoremap {} {}
-inoremap {<Enter> {}<LEFT><CR><ESC><S-o>
+inoremap {{<Enter> {}<LEFT><CR><ESC><S-o>
 
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
