@@ -185,10 +185,10 @@ let mapleader = ","
 noremap \ ,
 
 " 矢印キーでは表示行単位で行移動する
-nmap <UP> gk
-nmap <DOWN> gj
-vmap <UP> gk
-vmap <DOWN> gj
+nnoremap <UP> gk
+nnoremap <DOWN> gj
+vnoremap <UP> gk
+vnoremap <DOWN> gj
 
 " 括弧などの補完
 inoremap "" ""<LEFT>
