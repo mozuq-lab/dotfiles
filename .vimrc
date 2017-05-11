@@ -131,6 +131,10 @@ call dein#add('majutsushi/tagbar')
 "call dein#add('jiangmiao/auto-pairs')
 call dein#add('editorconfig/editorconfig-vim')
 
+" Markdown
+call dein#add('kannokanno/previm')
+call dein#add('tyru/open-browser.vim')
+
 " Syntax
 call dein#add('scrooloose/syntastic')
 call dein#add('othree/html5.vim')
@@ -260,6 +264,12 @@ let g:user_emmet_settings = {
 \       'lang': "ja"
 \   }
 \ }
+
+" Previm
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
 
 " vim-indent-guides
 let g:indent_guides_auto_colors = 0
