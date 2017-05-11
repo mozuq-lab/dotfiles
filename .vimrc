@@ -45,10 +45,6 @@ set laststatus=2
 " Mouse
 set mouse=a
 
-" yankでクリップボードを使う
-set clipboard&
-set clipboard^=unnamedplus
-
 " PasteMode
 set pastetoggle=<F10>
 " PasteModeを自動で抜ける
@@ -183,6 +179,9 @@ autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
 let mapleader = ","
 " ,のデフォルトの機能は、\で使えるように退避
 noremap \ ,
+
+" 選択範囲をクリップボードにコピー
+vnoremap <C-c> "+y
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
