@@ -194,7 +194,6 @@ inoremap '' ''<LEFT>
 inoremap [[ []<LEFT>
 inoremap (( ()<LEFT>
 inoremap () ()
-inoremap ((<Enter> ()<LEFT><CR><ESC><S-o>
 inoremap {{ {}<LEFT>
 inoremap {} {}
 inoremap {{<Enter> {}<LEFT><CR><ESC><S-o>
