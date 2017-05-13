@@ -181,6 +181,7 @@ noremap \ ,
 
 " 選択範囲をクリップボードにコピー
 vnoremap <C-c> "+y
+vnoremap <RightMouse> "+y
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
