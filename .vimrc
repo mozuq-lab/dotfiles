@@ -209,7 +209,7 @@ nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
 " Unite
 nnoremap <silent> <Leader>, :<C-u>Unite<CR>
-nnoremap <silent> <Leader>b :<C-u>Unite buffer<CR>
+nnoremap <silent> <Leader>B :<C-u>Unite buffer<CR>
 nnoremap <silent> <Leader>o :<C-u>Unite bookmark<CR>
 nnoremap <silent> <Leader>r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> <Leader>f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
@@ -217,12 +217,14 @@ nnoremap <silent> <Leader>m :<C-u>Unite file_mru buffer<CR>
 nnoremap <silent> <Leader>g :<C-u>Unite grep<CR>
 " depend yankround,,
 nnoremap <silent> <Leader>y :<C-u>Unite yankround<CR>
-let g:unite_enable_start_insert=0
+let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
 let g:unite_source_file_mru_limit = 100
 
 " VimFiler
 nnoremap <silent> <Leader>v :<C-u>VimFiler<CR>
+nnoremap <silent> <Leader>V :<C-u>VimFilerTab<CR>
+nnoremap <silent> <Leader>b :<C-u>VimFiler bookmark:<CR>
 
 " VimShell
 nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
