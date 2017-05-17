@@ -107,7 +107,7 @@ call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
 if has('unix')
   " fcitxでのノーマルモードIME対策
-  "call dein#add('vim-scripts/fcitx.vim')
+  call dein#add('vim-scripts/fcitx.vim')
 endif
 
 " Session
@@ -222,7 +222,7 @@ let g:unite_source_history_yank_enable =1
 let g:unite_source_file_mru_limit = 100
 
 " VimFiler
-nnoremap <silent> <Leader>v :<C-u>VimFiler<CR>
+nnoremap <silent> <Leader>v :<C-u>VimFilerBufferDir<CR>
 nnoremap <silent> <Leader>V :<C-u>VimFilerTab<CR>
 nnoremap <silent> <Leader>b :<C-u>VimFiler bookmark:<CR>
 
