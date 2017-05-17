@@ -1,6 +1,6 @@
 bind generic g          move-first-line
 bind generic E          view-grep
-bind generic gg         move-first-line
+bind generic g         move-first-line
 bind generic G          move-last-line
 bind generic <Ctrl-f>   move-page-down
 bind generic <Ctrl-b>   move-page-up
