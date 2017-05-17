@@ -107,7 +107,7 @@ call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
 if has('unix')
   " fcitxでのノーマルモードIME対策
-  call dein#add('vim-scripts/fcitx.vim')
+  call dein#add('lilydjwg/fcitx.vim')
 endif
 
 " Session
