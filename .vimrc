@@ -215,7 +215,7 @@ inoremap <buffer><expr> = search('(&\<bar><bar>\<bar>+\<bar>-\<bar>*\<bar>/\<bar
 inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
 inoremap <buffer><expr> : smartchr#one_of(': ', '::', ':')
-inoremap <buffer><expr> ( smartchr#one_of('(', '()<LEFT>',  '()')
+inoremap <buffer><expr> ( smartchr#one_of('(', '()<LEFT>')
 inoremap <buffer><expr> [ smartchr#one_of('[', '[]<LEFT>')
 inoremap <buffer><expr> ; search('\(\)\%#', 'bcn')? ';<LEFT><LEFT>': ';'
 inoremap <buffer><expr> { smartchr#one_of('{', '{}<LEFT>')
