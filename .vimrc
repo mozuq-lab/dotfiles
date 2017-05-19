@@ -124,7 +124,7 @@ call dein#add('junegunn/vim-easy-align')
 call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('kana/vim-smartchr')
-call dein#add('editorconfig/editorconfig-vim')
+call dein#add('sgur/vim-editorconfig')
 
 " Markdown
 call dein#add('kannokanno/previm')
