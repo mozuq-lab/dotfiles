@@ -105,10 +105,7 @@ call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
-if has('unix')
-  " fcitxでのノーマルモードIME対策
-  call dein#add('lilydjwg/fcitx.vim')
-endif
+call dein#add('pepo-le/fcitx-mem')
 
 " Session
 call dein#add('xolox/vim-misc')
