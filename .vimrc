@@ -177,8 +177,8 @@ let mapleader = ","
 noremap \ ,
 
 " 選択範囲をクリップボードにコピー
-vnoremap <C-c> "+y
-vnoremap <RightMouse> "+y
+vnoremap <C-c> "+y"*y
+vnoremap <RightMouse> "+y"*y
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
