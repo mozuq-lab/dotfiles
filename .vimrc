@@ -236,7 +236,7 @@ let g:unite_source_file_mru_limit = 100
 
 " VimFiler
 nnoremap <silent> <Leader>v :<C-u>VimFilerBufferDir<CR>
-nnoremap <silent> <Leader>V :<C-u>tabnew<CR>:<C-u>VimFiler<CR>
+nnoremap <silent> <Leader>V :<C-u>VimFilerBufferDir -edit-action=tabopen<CR>
 nnoremap <silent> <Leader>b :<C-u>VimFiler bookmark:<CR>
 
 " VimShell
