@@ -120,7 +120,7 @@ call dein#add('tomtom/tcomment_vim')
 call dein#add('junegunn/vim-easy-align')
 call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
-call dein#add('kana/vim-smartchr')
+call dein#add('kana/vim-smartinput')
 call dein#add('sgur/vim-editorconfig')
 
 " Markdown
@@ -194,31 +194,19 @@ autocmd InsertLeave * set nopaste
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
-" vim-smartchr
-inoremap <buffer><expr> < smartchr#one_of('<', ' < ')
-inoremap <buffer><expr> > search('< \%#', 'bcn')? '<bs>> ': smartchr#one_of('>', ' > ')
-inoremap <buffer><expr> + smartchr#one_of('+', '++', ' + ')
-inoremap <buffer><expr> - smartchr#one_of('-', '--', ' - ')
-inoremap <buffer><expr> * smartchr#one_of('*', '**', ' * ')
-inoremap <buffer><expr> / smartchr#one_of('/', '// ', ' / ')
-inoremap <buffer><expr> & smartchr#one_of('&', ' && ', ' & ')
-inoremap <buffer><expr> % smartchr#one_of('%', ' % ')
-inoremap <buffer><expr> <Bar> smartchr#one_of('<Bar>', ' <Bar><Bar> ', ' <Bar> ')
-" =の場合、単純な代入や比較演算子として入力する場合は前後にスペースをいれる。
-" 複合演算代入としての入力の場合は、直前のスペースを削除して=を入力
-inoremap <buffer><expr> = search('\(&\<bar><bar>\<bar>+\<bar>-\<bar>*\<bar>/\<bar>>\<bar><\) \%#', 'bcn')? '<bs>= '
-                            \ : search('!\%#', 'bcn')? '= '
-                            \ : smartchr#one_of('=', ' = ', ' == ',' === ')
-inoremap <buffer><expr> , smartchr#one_of(',', ', ')
-inoremap <buffer><expr> ? smartchr#one_of('?', '? ')
-inoremap <buffer><expr> : smartchr#one_of(':', '::', ': ')
-inoremap <buffer><expr> ( smartchr#one_of('(', '()<LEFT>')
-inoremap <buffer><expr> ) smartchr#one_of(')', '()', '();<LEFT><LEFT>')
-inoremap <buffer><expr> [ smartchr#one_of('[', '[]<LEFT>')
-inoremap <buffer><expr> { smartchr#one_of('{', '{}<LEFT>')
-inoremap <buffer><expr> " smartchr#one_of('"', '""<LEFT>')
-inoremap <buffer><expr> ' smartchr#one_of("'", "''<LEFT>")
-inoremap <buffer><expr> . smartchr#loop('.', '->', '=>', '...')
+" smartinput
+call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
+call smartinput#define_rule({
+            \   'at'    : '{\%#}',
+            \   'char'  : '<Space>',
+            \   'input' : '<Space><Space><Left>',
+            \   })
+call smartinput#map_to_trigger('i', ';', ';', ';')
+call smartinput#define_rule({
+            \   'at'    : '()\%#',
+            \   'char'  : ';',
+            \   'input' : ';<Left><Left>',
+            \   })
 
 " Unite
 nnoremap <silent> <Leader>, :<C-u>Unite<CR>
