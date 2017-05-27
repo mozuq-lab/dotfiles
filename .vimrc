@@ -178,7 +178,9 @@ noremap \ ,
 
 " 選択範囲をクリップボードにコピー
 vnoremap <C-c> "+y"*y
-vnoremap <RightMouse> "+y"*y
+if has('!gui_running')
+  vnoremap <RightMouse> "+y"*y
+endif
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
