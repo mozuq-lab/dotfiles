@@ -203,11 +203,23 @@ call smartinput#define_rule({
             \   'char'  : '<Space>',
             \   'input' : '<Space><Space><Left>',
             \   })
-call smartinput#map_to_trigger('i', ';', ';', ';')
+call smartinput#map_to_trigger('i', '(', '(', '(')
 call smartinput#define_rule({
-            \   'at'    : '()\%#',
-            \   'char'  : ';',
-            \   'input' : ';<Left><Left>',
+            \   'at'    : '(\%#)',
+            \   'char'  : '(',
+            \   'input' : '<Right>;<Left><Left>',
+            \   })
+call smartinput#map_to_trigger('i', '>', '>', '>')
+call smartinput#define_rule({
+            \   'at'    : '>\%#',
+            \   'char'  : '>',
+            \   'input' : '<BS>->',
+            \   })
+call smartinput#map_to_trigger('i', '>', '>', '>')
+call smartinput#define_rule({
+            \   'at'    : '->\%#',
+            \   'char'  : '>',
+            \   'input' : '<BS><BS>=><Space>',
             \   })
 
 " Unite
@@ -293,7 +305,7 @@ if isdirectory(s:local_session_directory)
   " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
   let g:session_autoload = 'yes'
   " 1分間に1回自動保存
-  let g:session_autosave_periodic = 1
+  let g:session_autosave_periodic = 10
 else
   let g:session_autosave = 'no'
   let g:session_autoload = 'no'
