@@ -105,7 +105,7 @@ call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
-call dein#add('pepo-le/fcitx-mem')
+call dein#add('pepo-le/fcitx-mem-re')
 
 " Session
 call dein#add('xolox/vim-misc')
