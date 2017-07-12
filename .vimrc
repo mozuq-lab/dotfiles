@@ -65,12 +65,13 @@ if has('win32')
   set pythonthreedll=$VIM/python3/python35.dll
 endif
 
-" Other
+" Others
 set number
 set scrolloff=10
 set whichwrap=b,s,<,>,[,],~
 set ambiwidth=double
 set backspace=2 "indent,eol,start
+set clipboard=
 
 
 
@@ -177,9 +178,9 @@ let mapleader = ","
 noremap \ ,
 
 " 選択範囲をクリップボードにコピー
-vnoremap <C-c> "+y"*y
+vnoremap <C-c> "+y
 if has('!gui_running')
-  vnoremap <RightMouse> "+y"*y
+  vnoremap <RightMouse> "+y
 endif
 
 " 矢印キーでは表示行単位で行移動する
