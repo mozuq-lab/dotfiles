@@ -295,6 +295,7 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=2
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=3
 
 " Vim-Session
+let g:session_directory = '~/.vim/sessions'
 " 現在のディレクトリ直下の .vimsessions/ を取得
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
 " 存在すれば
