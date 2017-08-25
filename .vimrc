@@ -189,6 +189,13 @@ nnoremap <DOWN> gj
 vnoremap <UP> gk
 vnoremap <DOWN> gj
 
+" 検索ハイライトをESC2度押しで消す
+nnoremap <ESC><ESC> :nohlsearch<CR>
+
+" インデントを連続で変更
+vnoremap < <gv
+vnoremap > >gv
+
 " PasteMode
 set pastetoggle=<F9>
 " PasteModeを自動で抜ける
