@@ -196,6 +196,10 @@ nnoremap <ESC><ESC> :nohlsearch<CR>
 vnoremap < <gv
 vnoremap > >gv
 
+" タブを移動
+nnoremap <C-LEFT> gT
+nnoremap <C-RIGHT> gt
+
 " PasteMode
 set pastetoggle=<F9>
 " PasteModeを自動で抜ける
