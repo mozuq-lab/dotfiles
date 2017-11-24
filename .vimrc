@@ -123,6 +123,7 @@ call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('kana/vim-smartinput')
 call dein#add('sgur/vim-editorconfig')
+call dein#add('captbaritone/better-indent-support-for-php-with-html')
 
 " Markdown
 call dein#add('kannokanno/previm')
