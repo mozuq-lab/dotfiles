@@ -157,6 +157,8 @@ syntax on
 " FileType
 "************************************************
 autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
+autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
+autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 
 
