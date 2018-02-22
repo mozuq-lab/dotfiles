@@ -123,6 +123,7 @@ call dein#add('mattn/emmet-vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('kana/vim-smartinput')
 call dein#add('sgur/vim-editorconfig')
+call dein#add('thinca/vim-quickrun')
 call dein#add('captbaritone/better-indent-support-for-php-with-html')
 
 " Markdown
@@ -199,7 +200,7 @@ nnoremap <ESC><ESC> :nohlsearch<CR>
 vnoremap < <gv
 vnoremap > >gv
 
-" タブを移動
+" タブ移動
 nnoremap <C-LEFT> gT
 nnoremap <C-RIGHT> gt
 
@@ -255,9 +256,13 @@ let g:unite_source_file_mru_limit = 100
 nnoremap <silent> <Leader>v :<C-u>VimFilerBufferDir<CR>
 nnoremap <silent> <Leader>V :<C-u>VimFilerBufferDir -edit-action=tabopen -force-quit -split<CR>
 nnoremap <silent> <Leader>b :<C-u>VimFiler bookmark:<CR>
+nnoremap <silent> <Leader>e :<C-u>VimFilerExplorer<CR>
 
 " VimShell
 nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
+
+" QuickRun
+nnoremap <silent> <Leader>q :<C-u>QuickRun<CR>
 
 " yankround
 let g:yankround_dir=$HOME . '/.vim/yankround'
