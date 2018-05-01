@@ -101,12 +101,13 @@ call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/vimfiler')
 call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
 call dein#add('pepo-le/fcitx-mem-re')
+call dein#add('scrooloose/nerdtree')
+call dein#add('jistr/vim-nerdtree-tabs')
 
 " Session
 call dein#add('xolox/vim-misc')
@@ -254,11 +255,9 @@ let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
 let g:unite_source_file_mru_limit = 100
 
-" VimFiler
-nnoremap <silent> <Leader>v :<C-u>VimFilerBufferDir<CR>
-nnoremap <silent> <Leader>V :<C-u>VimFilerBufferDir -edit-action=tabopen -force-quit -split<CR>
-nnoremap <silent> <Leader>b :<C-u>VimFiler bookmark:<CR>
-nnoremap <silent> <Leader>e :<C-u>VimFilerExplorer<CR>
+" NERDTree
+nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
+autocmd VimEnter * if argc() != 0 | let g:nerdtree_tabs_open_on_gui_startup=0 | endif
 
 " VimShell
 nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
