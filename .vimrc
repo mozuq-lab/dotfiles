@@ -133,6 +133,7 @@ call dein#add('tyru/open-browser.vim')
 
 " Syntax
 call dein#add('scrooloose/syntastic')
+call dein#add('sheerun/vim-polyglot')
 call dein#add('othree/html5.vim')
 call dein#add('nikvdp/ejs-syntax')
 call dein#add('hail2u/vim-css3-syntax')
@@ -159,7 +160,6 @@ syntax on
 "************************************************
 autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
 autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
-autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 
 
