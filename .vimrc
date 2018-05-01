@@ -230,15 +230,23 @@ call smartinput#define_rule({
             \   })
 call smartinput#map_to_trigger('i', '>', '>', '>')
 call smartinput#define_rule({
-            \   'at'    : '>\%#',
-            \   'char'  : '>',
-            \   'input' : '<BS>->',
+            \   'at'        : '>\%#',
+            \   'char'      : '>',
+            \   'input'     : '<BS>->',
+            \   'filetype'  : ['php']
             \   })
 call smartinput#map_to_trigger('i', '>', '>', '>')
 call smartinput#define_rule({
             \   'at'    : '->\%#',
             \   'char'  : '>',
             \   'input' : '<BS><BS>=><Space>',
+            \   'filetype'  : ['php']
+            \   })
+call smartinput#map_to_trigger('i', '?', '?', '?')
+call smartinput#define_rule({
+            \   'at'    : '<?\%#',
+            \   'char'  : '?',
+            \   'input' : '=<Space><Space>?><LEFT><LEFT><LEFT>',
             \   })
 
 " Unite
