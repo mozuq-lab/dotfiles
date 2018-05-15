@@ -158,6 +158,8 @@ syntax on
 "************************************************
 " FileType
 "************************************************
+autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
+autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
 autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
 autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
 
