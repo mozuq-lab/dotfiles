@@ -261,13 +261,15 @@ nnoremap <silent> <Leader>m :<C-u>Unite file_mru buffer<CR>
 nnoremap <silent> <Leader>g :<C-u>Unite grep<CR>
 " depend yankround,,
 nnoremap <silent> <Leader>y :<C-u>Unite yankround<CR>
-let g:unite_enable_start_insert=1
-let g:unite_source_history_yank_enable =1
+let g:unite_enable_start_insert = 1
+let g:unite_source_history_yank_enable = 1
 let g:unite_source_file_mru_limit = 100
 
 " NERDTree
 nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
-autocmd VimEnter * if argc() != 0 | let g:nerdtree_tabs_open_on_gui_startup=0 | endif
+let g:nerdtree_tabs_open_on_gui_startup = 0
+" vim-nerdtree-tabs
+nmap <Leader>E <Plug>NERDTreeTabsToggle<CR>
 
 " VimShell
 nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
