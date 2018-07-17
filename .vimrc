@@ -192,6 +192,7 @@ if has('!gui_running')
 endif
 " クリップボードからペースト
 noremap <MiddleMouse> "+p
+inoremap <C-v> <C-r>+
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
