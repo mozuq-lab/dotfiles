@@ -18,3 +18,7 @@ endif
 if has('unix')
   set guifont=Monospace\ 11
 endif
+
+" LocalSetting
+set runtimepath+=$HOME/.vim/
+runtime! localrc/*.vim
