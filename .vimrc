@@ -101,7 +101,6 @@ call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/vimshell.vim')
 call dein#add('itchyny/lightline.vim')
 call dein#add('LeafCage/yankround.vim')
 call dein#add('nathanaelkane/vim-indent-guides')
@@ -217,6 +216,9 @@ autocmd InsertLeave * set nopaste
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
+" shell
+nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
+
 " smartinput
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#define_rule({
@@ -270,9 +272,6 @@ nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
 let g:nerdtree_tabs_open_on_gui_startup = 0
 " vim-nerdtree-tabs
 nmap <Leader>E <Plug>NERDTreeTabsToggle<CR>
-
-" VimShell
-nnoremap <silent> <Leader>; :<C-u>VimShell<CR>
 
 " QuickRun
 nnoremap <silent> <Leader>q :<C-u>QuickRun<CR>
