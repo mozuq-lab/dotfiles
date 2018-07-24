@@ -221,6 +221,7 @@ nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
 " shell
 nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
+tnoremap <silent> <ESC> <C-\><C-n>
 
 " smartinput
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
