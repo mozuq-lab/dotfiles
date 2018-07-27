@@ -1,4 +1,49 @@
 "************************************************
+" Key Mapping
+"************************************************
+let mapleader = ","
+" ,のデフォルトの機能は、\で使えるように退避
+noremap \ ,
+
+" 選択範囲をクリップボードにコピー
+vnoremap <C-c> "+y
+if has('!gui_running')
+  vnoremap <RightMouse> "+y
+endif
+" クリップボードからペースト
+noremap <MiddleMouse> "+p
+inoremap <C-v> <C-r>+
+
+" 矢印キーでは表示行単位で行移動する
+nnoremap <UP> gk
+nnoremap <DOWN> gj
+vnoremap <UP> gk
+vnoremap <DOWN> gj
+
+" 検索ハイライトをESC2度押しで消す
+nnoremap <ESC><ESC> :nohlsearch<CR>
+
+" インデントを連続で変更
+vnoremap < <gv
+vnoremap > >gv
+
+" タブ移動
+nnoremap <C-LEFT> gT
+nnoremap <C-RIGHT> gt
+
+" PasteMode
+set pastetoggle=<F9>
+" PasteModeを自動で抜ける
+autocmd InsertLeave * set nopaste
+
+" tabnew
+nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
+
+" shell
+nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
+tnoremap <silent> <ESC> <C-\><C-n>
+
+"************************************************
 " dain
 "************************************************
 filetype off                   " Required!
@@ -98,6 +143,7 @@ colorscheme elflord
 set t_Co=256
 highlight Search ctermbg=3 ctermfg=255
 highlight Pmenu ctermbg=5 ctermfg=255
+highlight lCursor ctermbg=7 ctermfg=0
 
 " Windowsでpythonインターフェイスを有効にする
 if has('win32')
@@ -137,51 +183,6 @@ autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
 :command Seuc set fenc=euc-jp
 :command Suni set ff=unix
 :command Sdos set ff=dos
-
-"************************************************
-" Key Mapping
-"************************************************
-let mapleader = ","
-" ,のデフォルトの機能は、\で使えるように退避
-noremap \ ,
-
-" 選択範囲をクリップボードにコピー
-vnoremap <C-c> "+y
-if has('!gui_running')
-  vnoremap <RightMouse> "+y
-endif
-" クリップボードからペースト
-noremap <MiddleMouse> "+p
-inoremap <C-v> <C-r>+
-
-" 矢印キーでは表示行単位で行移動する
-nnoremap <UP> gk
-nnoremap <DOWN> gj
-vnoremap <UP> gk
-vnoremap <DOWN> gj
-
-" 検索ハイライトをESC2度押しで消す
-nnoremap <ESC><ESC> :nohlsearch<CR>
-
-" インデントを連続で変更
-vnoremap < <gv
-vnoremap > >gv
-
-" タブ移動
-nnoremap <C-LEFT> gT
-nnoremap <C-RIGHT> gt
-
-" PasteMode
-set pastetoggle=<F9>
-" PasteModeを自動で抜ける
-autocmd InsertLeave * set nopaste
-
-" tabnew
-nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
-
-" shell
-nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
-tnoremap <silent> <ESC> <C-\><C-n>
 
 "************************************************
 " Local Setting
