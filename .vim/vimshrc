@@ -1,7 +1,0 @@
-alias sudo='sudo -E '
-alias ll='ls -l'
-alias la='ls -la'
-alias mv='mv -i'
-alias rm='rm -i'
-alias cp='cp -i'
-alias vi='vim'

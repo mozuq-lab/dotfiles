@@ -7,3 +7,12 @@ for /d %%i in (.*) do (
 for %%i in (.*) do (
     mklink %USERPROFILE%\%%i %USERPROFILE%\dotfiles\%%i
 )
+
+rem NeoVim
+SET COPY_FROM=%USERPROFILE%\dotfiles
+SET COPY_TO=%USERPROFILE%\AppData\Local\nvim
+if not exist %COPY_TO% (
+    mkdir %COPY_TO%
+)
+mklink %COPY_TO%\init.vim %COPY_FROM%\.vimrc
+mklink %COPY_TO%\ginit.vim %COPY_FROM%\.gvimrc

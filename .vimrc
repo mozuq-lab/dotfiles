@@ -1,10 +1,48 @@
 "************************************************
+" dain
+"************************************************
+filetype off                   " Required!
+
+" dein dir
+let s:dein_dir = expand('~/.vim/dein')
+" dein.vim
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+" clone dein
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . s:dein_repo_dir
+endif
+
+if dein#load_state(s:dein_dir)
+  call dein#begin(expand('~/.vim/dein'))
+  call dein#add('Shougo/dein.vim')
+  "" -------------------------------
+  call dein#load_toml(expand('~/.vim') . '/dein.toml')
+  "" -------------------------------
+  call dein#end()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+filetype plugin indent on     " Required!
+syntax on
+
+"************************************************
 " Basic Settings
 "************************************************
 set directory=$HOME/.vim/swap
 set backupdir=$HOME/.vim/backup
 set undodir=$HOME/.vim/undo
-set viminfo+=n~/.vim/viminfo
+if has('nvim')
+  set viminfo+=n~/.vim/nviminfo
+else
+  set viminfo+=n~/.vim/viminfo
+endif
 
 " Encoding
 set encoding=utf-8
@@ -58,11 +96,17 @@ endif
 " Color
 colorscheme elflord
 set t_Co=256
+highlight Search ctermbg=3 ctermfg=255
+highlight Pmenu ctermbg=5 ctermfg=255
 
 " Windowsでpythonインターフェイスを有効にする
 if has('win32')
-  set runtimepath+=$VIM
-  set pythonthreedll=$VIM/python3/python35.dll
+  if has('nvim')
+    let g:python3_host_prog = 'python.exe'
+  else
+    set runtimepath+=$VIM
+    set pythonthreedll=$VIM/python3/python35.dll
+  endif
 endif
 
 " Others
@@ -73,87 +117,6 @@ set ambiwidth=double
 set backspace=2 "indent,eol,start
 set clipboard=
 
-
-
-"************************************************
-" dain
-"************************************************
-filetype off                   " Required!
-
-" dein dir
-let s:dein_dir = expand('~/.vim/dein')
-" dein.vim
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-" clone dein
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  "execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-  execute 'set runtimepath^=' . s:dein_repo_dir
-endif
-
-call dein#begin(expand('~/.vim/dein'))
-"" -------------------------------
-call dein#add('Shougo/dein.vim')
-
-call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
-call dein#add('Shougo/unite.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('itchyny/lightline.vim')
-call dein#add('LeafCage/yankround.vim')
-call dein#add('nathanaelkane/vim-indent-guides')
-call dein#add('pepo-le/fcitx-mem-re')
-call dein#add('scrooloose/nerdtree')
-call dein#add('jistr/vim-nerdtree-tabs')
-
-" Session
-call dein#add('xolox/vim-misc')
-call dein#add('xolox/vim-session')
-
-" Coding
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('tpope/vim-surround')
-call dein#add('tomtom/tcomment_vim')
-call dein#add('junegunn/vim-easy-align')
-call dein#add('mattn/emmet-vim')
-call dein#add('majutsushi/tagbar')
-call dein#add('kana/vim-smartinput')
-call dein#add('sgur/vim-editorconfig')
-call dein#add('thinca/vim-quickrun')
-call dein#add('captbaritone/better-indent-support-for-php-with-html')
-
-" Markdown
-call dein#add('kannokanno/previm')
-call dein#add('tyru/open-browser.vim')
-
-" Syntax
-call dein#add('scrooloose/syntastic')
-call dein#add('sheerun/vim-polyglot')
-call dein#add('othree/html5.vim')
-call dein#add('nikvdp/ejs-syntax')
-call dein#add('hail2u/vim-css3-syntax')
-call dein#add('othree/yajs.vim')
-call dein#add('vim-scripts/jQuery')
-
-" Git
-call dein#add('tpope/vim-fugitive')
-call dein#add('airblade/vim-gitgutter')
-"" -------------------------------
-call dein#end()
-
-if dein#check_install()
-  call dein#install()
-endif
-
-filetype plugin indent on     " Required!
-syntax on
-
-
-
 "************************************************
 " FileType
 "************************************************
@@ -163,23 +126,20 @@ autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
 autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
 autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
 autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
-
-
+autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
 
 "************************************************
 " Command
 "************************************************
-" Encoding -------------------------
+" Encoding
 :command Sutf set fenc=utf-8
 :command Scp set fenc=cp932
 :command Seuc set fenc=euc-jp
 :command Suni set ff=unix
 :command Sdos set ff=dos
 
-
-
 "************************************************
-" Mapping & Plugin
+" Key Mapping
 "************************************************
 let mapleader = ","
 " ,のデフォルトの機能は、\で使えるように退避
@@ -223,202 +183,8 @@ nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
 tnoremap <silent> <ESC> <C-\><C-n>
 
-" smartinput
-call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-call smartinput#define_rule({
-            \   'at'    : '{\%#}',
-            \   'char'  : '<Space>',
-            \   'input' : '<Space><Space><Left>',
-            \   })
-call smartinput#map_to_trigger('i', '(', '(', '(')
-call smartinput#define_rule({
-            \   'at'    : '(\%#)',
-            \   'char'  : '(',
-            \   'input' : '<Right>;<Left><Left>',
-            \   })
-call smartinput#map_to_trigger('i', '>', '>', '>')
-call smartinput#define_rule({
-            \   'at'        : '>\%#',
-            \   'char'      : '>',
-            \   'input'     : '<BS>->',
-            \   'filetype'  : ['php']
-            \   })
-call smartinput#map_to_trigger('i', '>', '>', '>')
-call smartinput#define_rule({
-            \   'at'    : '->\%#',
-            \   'char'  : '>',
-            \   'input' : '<BS><BS>=><Space>',
-            \   'filetype'  : ['php']
-            \   })
-call smartinput#map_to_trigger('i', '?', '?', '?')
-call smartinput#define_rule({
-            \   'at'    : '<?\%#',
-            \   'char'  : '?',
-            \   'input' : '=<Space><Space>?><LEFT><LEFT><LEFT>',
-            \   })
-
-" Unite
-nnoremap <silent> <Leader>, :<C-u>Unite<CR>
-nnoremap <silent> <Leader>B :<C-u>Unite buffer<CR>
-nnoremap <silent> <Leader>o :<C-u>Unite bookmark<CR>
-nnoremap <silent> <Leader>r :<C-u>Unite -buffer-name=register register<CR>
-nnoremap <silent> <Leader>f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> <Leader>m :<C-u>Unite file_mru buffer<CR>
-nnoremap <silent> <Leader>g :<C-u>Unite grep<CR>
-" depend yankround,,
-nnoremap <silent> <Leader>y :<C-u>Unite yankround<CR>
-let g:unite_enable_start_insert = 1
-let g:unite_source_history_yank_enable = 1
-let g:unite_source_file_mru_limit = 100
-
-" NERDTree
-nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
-let g:nerdtree_tabs_open_on_gui_startup = 0
-" vim-nerdtree-tabs
-nmap <Leader>E <Plug>NERDTreeTabsToggle<CR>
-
-" QuickRun
-nnoremap <silent> <Leader>q :<C-u>QuickRun<CR>
-
-" yankround
-let g:yankround_dir=$HOME . '/.vim/yankround'
-nmap p <Plug>(yankround-p)
-nmap P <Plug>(yankround-P)
-nmap gp <Plug>(yankround-gp)
-nmap gP <Plug>(yankround-gP)
-nmap <C-p> <Plug>(yankround-prev)
-nmap <C-n> <Plug>(yankround-next)
-
-" vim-easy-align
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)"
-
-" tagbar
-nmap <F8> :TagbarToggle<CR>
-
-" syntastic
-let g:syntastic_mode_map = { 'mode': 'passive',
-  \ 'active_filetypes': [''],
-  \ 'passive_filetypes': [''] }
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_auto_jump = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_php_checkers = ['php']
-
-" emmet
-let g:user_emmet_leader_key = '<c-e>'
-let g:user_emmet_settings = {
-\   'html': {
-\       'lang': "ja"
-\   }
-\ }
-
-" Previm
-augroup PrevimSettings
-  autocmd!
-  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
-
-" vim-indent-guides
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=2
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=3
-
-" Vim-Session
-let g:session_directory = '~/.vim/sessions'
-" 現在のディレクトリ直下の .vimsessions/ を取得
-let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
-" 存在すれば
-if isdirectory(s:local_session_directory)
-  " session保存ディレクトリをそのディレクトリの設定
-  let g:session_directory = s:local_session_directory
-  " vimを辞める時に自動保存
-  let g:session_autosave = 'yes'
-  " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
-  let g:session_autoload = 'yes'
-  " 自動保存
-  let g:session_autosave_periodic = 0
-else
-  let g:session_autosave = 'no'
-  let g:session_autoload = 'no'
-endif
-unlet s:local_session_directory
-
-" neosnippet
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
 "************************************************
-" neocomplete
+" Local Setting
 "************************************************
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase, camelcase, underbar
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplcache_enable_camel_case_completion = 0
-let g:neocomplcache_enable_underbar_completion = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-" Cache directory
-let g:neocomplete#data_directory = $HOME.'/.vim/neocomplete/cache'
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-\ }
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-y>  neocomplete#close_popup()
-"inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-" For cursor moving in insert mode(Not recommended)
-inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-"************************************************
-
-" LocalSetting
 set runtimepath+=$HOME/.vim/
-runtime! localrc/*.vim
+runtime! localrc/vimrc.vim

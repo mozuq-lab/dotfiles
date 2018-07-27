@@ -1,5 +1,9 @@
 colorscheme desert
-set viminfo+=n~/.vim/viminfo
+if has('nvim')
+  set viminfo+=n~/.vim/nviminfo
+else
+  set viminfo+=n~/.vim/viminfo
+endif
 set lines=44
 set columns=150
 set cursorline
@@ -19,6 +23,13 @@ if has('unix')
   set guifont=Monospace\ 11
 endif
 
-" LocalSetting
+" Hack（nvim-qtでファイル内容が表示されない対策）
+if has('nvim')
+  bd
+endif
+
+"************************************************
+" Local Setting
+"************************************************
 set runtimepath+=$HOME/.vim/
-runtime! localrc/*.vim
+runtime! localrc/gvimrc.vim
