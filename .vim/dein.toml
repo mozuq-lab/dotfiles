@@ -79,6 +79,10 @@ repo = 'pepo-le/fcitx-mem-re'
 if = 'has("unix")'
 
 [[plugins]]
+repo = 'pepo-le/win-ime-con.nvim'
+if = 'has("win32")'
+
+[[plugins]]
 repo = 'scrooloose/nerdtree'
 hook_add = '''
   nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
