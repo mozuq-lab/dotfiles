@@ -12,7 +12,7 @@ if has('!gui_running')
 endif
 " クリップボードからペースト
 noremap <MiddleMouse> "+p
-inoremap <C-v> <C-r>+
+inoremap <C-v> <C-o>:set paste<CR><C-r>+<C-o>:set nopaste<CR>
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
@@ -34,13 +34,19 @@ nnoremap <C-RIGHT> gt
 " PasteMode
 set pastetoggle=<F9>
 " PasteModeを自動で抜ける
-autocmd InsertLeave * set nopaste
+augroup pasteMode
+  autocmd InsertLeave * set nopaste
+augroup END
 
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
 
 " shell
-nnoremap <silent> <Leader>s :<C-u>terminal ++close ++rows=8<CR>
+if has('nvim')
+  nnoremap <silent> <Leader>s :<C-u>terminal<CR>i
+else
+  nnoremap <silent> <Leader>s :<C-u>terminal ++rows=8<CR>
+endif
 tnoremap <silent> <ESC> <C-\><C-n>
 
 "************************************************
@@ -139,8 +145,7 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 " Color
-colorscheme elflord
-set t_Co=256
+"colorscheme elflord
 highlight Search ctermbg=3 ctermfg=255
 highlight Pmenu ctermbg=5 ctermfg=255
 highlight lCursor ctermbg=7 ctermfg=0
@@ -166,23 +171,26 @@ set clipboard=
 "************************************************
 " FileType
 "************************************************
-autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
-autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
-autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
-autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
-autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
-autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
-autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
+augroup fileTypeSet
+    autocmd!
+    autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
+    autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
+    autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
+    autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
+    autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
+    autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
+    autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
+augroup END
 
 "************************************************
 " Command
 "************************************************
 " Encoding
-:command Sutf set fenc=utf-8
-:command Scp set fenc=cp932
-:command Seuc set fenc=euc-jp
-:command Suni set ff=unix
-:command Sdos set ff=dos
+:command! Sutf set fenc=utf-8
+:command! Scp set fenc=cp932
+:command! Seuc set fenc=euc-jp
+:command! Suni set ff=unix
+:command! Sdos set ff=dos
 
 "************************************************
 " Local Setting

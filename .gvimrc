@@ -24,7 +24,7 @@ if has('unix')
 endif
 
 " Hack（nvim-qtでファイル内容が表示されない対策）
-if has('nvim')
+if has('nvim') && @% == ""
   bd
 endif
 
