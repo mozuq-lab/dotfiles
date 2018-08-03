@@ -200,6 +200,17 @@ augroup END
 :command! Sdos set ff=dos
 
 "************************************************
+" Coding
+"************************************************
+" PHP
+" $VIMRUNTIME/syntax/php.vim
+let g:php_baselib       = 1
+let g:php_htmlInStrings = 1
+let g:php_noShortTags   = 1
+let g:php_sql_query     = 1
+"let g:sql_type_default = 'mysql'
+
+"************************************************
 " Local Setting
 "************************************************
 set runtimepath+=$HOME/.vim/
