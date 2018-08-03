@@ -49,6 +49,10 @@ else
 endif
 tnoremap <silent> <ESC> <C-\><C-n>
 
+" ctags
+nnoremap tj g<C-]>
+nnoremap tb <C-t>
+
 "************************************************
 " dain
 "************************************************
