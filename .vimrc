@@ -149,7 +149,10 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 " Color
-"colorscheme elflord
+if has('nvim')
+  set termguicolors
+endif
+colorscheme elflord
 highlight Search ctermbg=3 ctermfg=255
 highlight Pmenu ctermbg=5 ctermfg=255
 highlight lCursor ctermbg=7 ctermfg=0

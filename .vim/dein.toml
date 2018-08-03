@@ -53,6 +53,11 @@ on_source = 'unite.vim'
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
+hook_add = '''
+  if &t_Co == 16
+    let g:lightline = {'colorscheme': '16color'}
+  endif
+'''
 
 [[plugins]]
 repo = 'LeafCage/yankround.vim'
