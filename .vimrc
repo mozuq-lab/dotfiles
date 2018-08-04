@@ -142,18 +142,23 @@ set mouse=a
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 " IME
-set iminsert=0
+set iminsert=1
 if has('multi_byte_ime') || has('xim')
   " 挿入モードのIME状態を記憶しないようにする
   "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 endif
 
 " Color
-if has('nvim')
+if has('unix')
   set termguicolors
+  colorscheme desert
+elseif has('nvim')
+  set termguicolors
+  colorscheme koehler
+else
+  colorscheme elflord
 endif
-colorscheme elflord
-highlight Search ctermbg=3 ctermfg=255
+highlight Search ctermbg=3 ctermfg=8
 highlight Pmenu ctermbg=5 ctermfg=255
 highlight lCursor ctermbg=7 ctermfg=0
 
