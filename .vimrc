@@ -31,6 +31,12 @@ vnoremap > >gv
 nnoremap <C-LEFT> gT
 nnoremap <C-RIGHT> gt
 
+" " ウィンドウ移動
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 " PasteMode
 set pastetoggle=<F9>
 " PasteModeを自動で抜ける
@@ -119,6 +125,9 @@ set ignorecase
 set smartcase
 set imsearch=0
 nnoremap / /\v
+if has('nvim')
+  set inccommand=split
+endif
 
 " Tab & Trailing Space
 set list
