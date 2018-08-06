@@ -192,10 +192,6 @@ hook_add = '''
   "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
   "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
   "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  "- Python
-  autocmd FileType python setlocal omnifunc=jedi#completions
-  let g:jedi#completions_enabled = 0
-  let g:jedi#auto_vim_configuration = 0
 '''
 
 [[plugins]]
@@ -290,6 +286,17 @@ on_ft = 'go'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
+on_ft = 'python'
+hook_add = '''
+  autocmd FileType python setlocal omnifunc=jedi#completions
+  let g:jedi#completions_enabled = 0
+  let g:jedi#auto_vim_configuration = 0
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+depends = 'deoplete'
+if = 'has("nvim")'
 on_ft = 'python'
 
 #************************************************
