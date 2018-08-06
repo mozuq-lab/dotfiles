@@ -54,8 +54,16 @@ on_source = 'unite.vim'
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = '''
-  if has('win32') && !has('gui_running') && !has('nvim')
+  if has('win32') && (!has('gui_running') && !has('nvim'))
     let g:lightline = {'colorscheme': '16color'}
+  else
+    let g:lightline = {'colorscheme': 'default'}
+  endif
+  if has('nvim')
+    let g:lightline.enable = {
+    \   'statusline': 1,
+    \   'tabline': 0
+    \ }
   endif
 '''
 
