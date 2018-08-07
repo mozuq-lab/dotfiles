@@ -59,6 +59,9 @@ tnoremap <silent> <ESC> <C-\><C-n>
 nnoremap tj g<C-]>
 nnoremap tb <C-t>
 
+" omni
+inoremap <C-f> <C-x><C-o>
+
 "************************************************
 " dain
 "************************************************
