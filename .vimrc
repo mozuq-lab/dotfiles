@@ -195,15 +195,17 @@ set clipboard=
 "************************************************
 " FileType
 "************************************************
-augroup fileTypeSet
-    autocmd!
-    autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
-    autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
-    autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
-    autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
-    autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
-    autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
-    autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
+augroup FiletypeGroup
+  autocmd!
+  autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
+  autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
+  autocmd BufRead,BufNewFile *.jsx set filetype=javascript.jsx
+  autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
+  autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
+  autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
+  autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
+  autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
+  autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
 augroup END
 
 "************************************************

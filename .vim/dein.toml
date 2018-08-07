@@ -344,8 +344,9 @@ hook_add = '''
   let g:syntastic_check_on_open = 0
   let g:syntastic_auto_jump = 0
   let g:syntastic_check_on_wq = 0
-  let g:syntastic_javascript_checkers = ['eslint']
-  let g:syntastic_php_checkers = ['php']
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_php_checkers = ['phpcs', 'phpmd']
+  let g:syntastic_php_phpcs_args='--standard=psr2'
 '''
 
 [[plugins]]
@@ -353,14 +354,16 @@ repo = 'w0rp/ale'
 hook_add = '''
   let g:ale_lint_on_enter = 0
   let g:ale_linters = {
+  \   'html': ['htmlhint'],
+  \   'css': ['csslint'],
+  \   'sass': ['sass_lint'],
   \   'javascript': ['eslint'],
-  \   'go': ['golint'],
+  \   'typescript': ['eslint'],
+  \   'go': ['govet', 'golint'],
   \   'php': ['php'],
   \   'python': ['pylint'],
   \   'java': ['javac'],
   \}
-  let g:ale_php_phpcs_standard = 'PSR2'
-  let g:ale_php_phpcs_use_global = 1
   let g:ale_python_pylint_executable = 'pylint3'
 '''
 
