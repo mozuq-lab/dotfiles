@@ -346,7 +346,8 @@ hook_add = '''
   let g:syntastic_check_on_wq = 0
   let g:syntastic_auto_loc_list = 1
   let g:syntastic_php_checkers = ['phpcs', 'phpmd']
-  let g:syntastic_php_phpcs_args='--standard=psr2'
+  let g:syntastic_php_phpcs_args = '--standard=psr2'
+  let g:syntastic_java_javac_args = '-J-Duser.language=en'
 '''
 
 [[plugins]]
@@ -365,6 +366,7 @@ hook_add = '''
   \   'java': ['javac'],
   \}
   let g:ale_python_pylint_executable = 'pylint3'
+  let g:ale_java_javac_options = '-J-Duser.language=en'
 '''
 
 [[plugins]]
