@@ -242,10 +242,10 @@ hook_add = '''
               \   'char'  : '<Space>',
               \   'input' : '<Space><Space><Left>',
               \   })
-  call smartinput#map_to_trigger('i', '(', '(', '(')
+  call smartinput#map_to_trigger('i', ';', ';', ';')
   call smartinput#define_rule({
               \   'at'    : '(\%#)',
-              \   'char'  : '(',
+              \   'char'  : ';',
               \   'input' : '<Right>;<Left><Left>',
               \   })
   call smartinput#map_to_trigger('i', '>', '>', '>')
