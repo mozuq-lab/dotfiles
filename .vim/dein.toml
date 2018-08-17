@@ -365,7 +365,7 @@ hook_add = '''
   \   'python': ['pylint'],
   \   'java': ['javac'],
   \}
-  let g:ale_python_pylint_executable = 'pylint3'
+  let g:ale_python_pylint_options = '--rcfile ~/.pylintrc.d/alerc'
   let g:ale_java_javac_options = '-J-Duser.language=en'
 '''
 
