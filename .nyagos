@@ -5,4 +5,5 @@ alias{
     rm='rm -i',
     cp='cp -i',
     vi='vim',
+    ipy='ipython'
 }
