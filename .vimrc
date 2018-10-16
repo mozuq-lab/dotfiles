@@ -100,7 +100,9 @@ syntax on
 " Basic Settings
 "************************************************
 set directory=$HOME/.vim/swap
+set backup
 set backupdir=$HOME/.vim/backup
+set undofile
 set undodir=$HOME/.vim/undo
 if has('nvim')
   set viminfo+=n~/.vim/nviminfo
