@@ -104,9 +104,13 @@ hook_add = '''
 [[plugins]]
 repo = 'jistr/vim-nerdtree-tabs'
 hook_add = '''
+  let g:nerdtree_tabs_startup_cd = 0
   let g:nerdtree_tabs_open_on_gui_startup = 0
   nmap <Leader>E <Plug>NERDTreeTabsToggle<CR>
 '''
+
+[[plugins]]
+repo = 'thinca/vim-qfreplace'
 
 #************************************************
 # Session
@@ -219,6 +223,9 @@ repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
+hook_add = '''
+  let g:tcomment_opleader1 = ',c'
+'''
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
@@ -231,7 +238,19 @@ hook_add = '''
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
-hook_add = 'nmap <F8> :TagbarToggle<CR>'
+hook_add = 'nmap <F8> :<C-u>TagbarToggle<CR>'
+
+[[plugins]]
+repo = 'vim-scripts/gtags.vim'
+hook_add = '''
+  nnoremap gc :<C-u>GtagsCursor<CR>
+'''
+
+[[plugins]]
+repo = 'jsfaint/gen_tags.vim'
+hook_add = '''
+    let g:gen_tags#gtags_auto_gen = 1
+'''
 
 [[plugins]]
 repo = 'kana/vim-smartinput'

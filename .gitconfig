@@ -1,7 +1,7 @@
 [user]
-    name = pepo-le
+	name = pepo-le
 [user]
-    email = hello@pepo-le.com
+	email = hello@pepo-le.com
 [core]
     autocrlf = input
     excludesfile = ~/.gitignore

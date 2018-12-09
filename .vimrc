@@ -176,6 +176,13 @@ highlight Search ctermbg=3 ctermfg=8
 highlight Pmenu ctermbg=5 ctermfg=255
 highlight lCursor ctermbg=7 ctermfg=0
 
+" Quickfixを自動で閉じる
+augroup QfAutoCommands
+  autocmd!
+  " Auto-close quickfix window
+  autocmd WinEnter * if (winnr('$') == 1) && (getbufvar(winbufnr(0), '&buftype')) == 'quickfix' | quit | endif
+augroup END
+
 " Windowsでpythonインターフェイスを有効にする
 if has('win32')
   if has('nvim')
