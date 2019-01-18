@@ -1,6 +1,5 @@
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
-if = '! has("nvim")'
 hook_post_update = '''
   if dein#util#_is_windows()
     let cmd = 'make -f make_mingw64.mak'
@@ -249,7 +248,7 @@ hook_add = '''
 [[plugins]]
 repo = 'jsfaint/gen_tags.vim'
 hook_add = '''
-    let g:gen_tags#gtags_auto_gen = 1
+    " let g:gen_tags#gtags_auto_gen = 1
 '''
 
 [[plugins]]
@@ -403,6 +402,10 @@ repo = 'hail2u/vim-css3-syntax'
 
 [[plugins]]
 repo = 'vim-scripts/jQuery'
+
+[[plugins]]
+repo = 'Quramy/tsuquyomi'
+on_ft = 'typescript'
 
 #************************************************
 # Git
