@@ -166,9 +166,6 @@ endif
 if has('unix')
   set termguicolors
   colorscheme desert
-elseif has('nvim')
-  set termguicolors
-  colorscheme koehler
 else
   colorscheme elflord
 endif

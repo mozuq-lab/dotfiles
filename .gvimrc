@@ -15,17 +15,12 @@ if has('multi_byte_ime') || has('xim')
   highlight CursorIM guifg=NONE guibg=LightBlue
 endif
 
-if has('win32')
+if has('win32') && ! has('nvim')
   set guifont=MS_Gothic:h11
 endif
 
 if has('unix')
   set guifont=Monospace\ 11
-endif
-
-" Hack（nvim-qtでファイル内容が表示されない対策）
-if has('nvim') && @% == ""
-  bd
 endif
 
 "************************************************
