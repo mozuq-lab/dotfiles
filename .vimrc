@@ -129,6 +129,7 @@ set incsearch
 set ignorecase
 set smartcase
 set imsearch=0
+set shortmess-=S
 nnoremap / /\v
 if has('nvim')
   set inccommand=split
