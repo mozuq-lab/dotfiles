@@ -81,7 +81,7 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 if dein#load_state(s:dein_dir)
-  call dein#begin(expand('~/.vim/dein'))
+  call dein#begin(s:dein_dir)
   call dein#add('Shougo/dein.vim')
   "" -------------------------------
   call dein#load_toml(expand('~/.vim') . '/dein.toml')
@@ -187,7 +187,7 @@ if has('win32')
     let g:python3_host_prog = 'python.exe'
   else
     set runtimepath+=$VIM
-    set pythonthreedll=$VIM/python3/python35.dll
+    set pythonthreedll=$VIM/python3/python37.dll
   endif
 endif
 
