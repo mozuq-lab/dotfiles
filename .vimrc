@@ -157,7 +157,7 @@ set mouse=a
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 " IME
-set iminsert=1
+set iminsert=0
 if has('multi_byte_ime') || has('xim')
   " 挿入モードのIME状態を記憶しないようにする
   "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
