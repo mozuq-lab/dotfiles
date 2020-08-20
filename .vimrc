@@ -204,6 +204,7 @@ set clipboard=
 "************************************************
 augroup FiletypeGroup
   autocmd!
+  autocmd FileType vim setlocal sw=2 sts=2 ts=2 et
   autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
   autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
   autocmd BufRead,BufNewFile *.jsx set filetype=javascript.jsx
