@@ -144,7 +144,7 @@ hook_add = '''
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
 if = 'has("nvim")'
-on_i = 1
+on_event = 'InsertEnter'
 hook_add = '''
   let g:deoplete#enable_at_startup = 1
 '''
@@ -152,7 +152,7 @@ hook_add = '''
 [[plugins]]
 repo = 'Shougo/neocomplete.vim'
 if = '! has("nvim")'
-on_i = 1
+on_event = 'InsertEnter'
 hook_add = '''
   "- Disable AutoComplPop.
   let g:acp_enableAtStartup = 0
