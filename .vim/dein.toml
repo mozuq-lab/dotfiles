@@ -54,7 +54,7 @@ on_source = 'unite.vim'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
   if has('win32') && (!has('gui_running') && !has('nvim'))
-    let g:lightline = {'colorscheme': '16color'}
+    let g:lightline = {'colorscheme': 'one'}
   else
     let g:lightline = {'colorscheme': 'default'}
   endif
