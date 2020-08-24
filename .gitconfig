@@ -15,3 +15,5 @@
     diffn = diff --name-only
 [push]
     default = simple
+[credential]
+    helper = manager
