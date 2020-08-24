@@ -184,10 +184,9 @@ augroup END
 " Windowsでpythonインターフェイスを有効にする
 if has('win32')
   if has('nvim')
-    let g:python3_host_prog = 'python.exe'
+    let g:python3_host_prog = $PYTHONHOME . '\python.exe'
   else
-    set runtimepath+=$VIM
-    set pythonthreedll=$VIM/python3/python37.dll
+    set pythonthreedll=$PYTHONHOME\python38.dll
   endif
 endif
 
