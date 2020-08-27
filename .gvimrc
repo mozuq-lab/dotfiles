@@ -20,7 +20,11 @@ if has('win32') && ! has('nvim')
 endif
 
 if has('unix')
-  set guifont=Monospace\ 11
+  if has('nvim')
+    set guifont=Ubuntu\ Mono:h11
+  else
+    set guifont=Monospace\ 11
+  endif
 endif
 
 "************************************************
