@@ -222,6 +222,12 @@ repo = 'sgur/vim-editorconfig'
 repo = 'thinca/vim-quickrun'
 hook_add = '''
   nnoremap <Leader>q :QuickRun<CR>
+  nnoremap <Leader>Q :QuickRun <=@+<CR>
+  let g:quickrun_config = {
+    \ 'python': {
+    \   'command': 'python3'
+    \ },
+  \ }
 '''
 
 [[plugins]]
