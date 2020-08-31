@@ -95,6 +95,16 @@ hook_add = '''
 [[plugins]]
 repo = 'thinca/vim-qfreplace'
 
+[[plugins]]
+repo = 'dhruvasagar/vim-table-mode'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+hook_add = '''
+  let g:winresizer_vert_resize = 1
+  let g:winresizer_horiz_resize = 1
+'''
+
 #************************************************
 # Session
 #************************************************
@@ -253,6 +263,9 @@ on_ft = 'go'
 repo = 'zchee/deoplete-jedi'
 depends = 'deoplete.nvim'
 on_ft = 'python'
+
+[[plugins]]
+repo = 'prettier/vim-prettier'
 
 #************************************************
 # Markdonw
