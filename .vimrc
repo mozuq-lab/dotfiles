@@ -84,7 +84,10 @@ if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
   call dein#add('Shougo/dein.vim')
   "" -------------------------------
-  call dein#load_toml(expand('~/.vim') . '/dein.toml')
+  call dein#load_toml('~/.vim/toml/base.toml')
+  call dein#load_toml('~/.vim/toml/code.toml')
+  call dein#load_toml('~/.vim/toml/syntax.toml')
+  call dein#load_toml('~/.vim/toml/lsp.toml')
   "" -------------------------------
   call dein#end()
 endif

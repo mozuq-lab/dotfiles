@@ -1,0 +1,30 @@
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_add = '''
+  if executable('pyls')
+      " pip install python-language-server
+      au User lsp_setup call lsp#register_server({
+          \ 'name': 'pyls',
+          \ 'cmd': {server_info->['pyls']},
+          \ 'allowlist': ['python'],
+          \ })
+  endif
+
+  let g:lsp_diagnostics_enabled = 0
+'''
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+depends = 'vim-lsp'
+
+[[plugins]]
+repo = 'lighttiger2505/deoplete-vim-lsp'
+depends = 'deoplete.nvim'
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+hook_add = '''
+  let g:vista_sidebar_width = 40
+  let g:vista_echo_cursor = 0
+  nnoremap <silent> <Leader>o :<C-u>Vista!!<CR>
+'''

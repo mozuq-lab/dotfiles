@@ -1,0 +1,159 @@
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'make -f make_mingw64.mak'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+lazy = 1
+hook_add = '''
+  nnoremap <silent> <Leader>R :<C-u>Denite -resume<CR>
+  nnoremap <silent> <Leader>r :<C-u>Denite register<CR>
+  nnoremap <silent> <Leader>b :<C-u>Denite buffer<CR>
+  nnoremap <silent> <Leader>f :<C-u>Denite file/rec<CR>
+  nnoremap <silent> <Leader>g :<C-u>Denite grep<CR>
+'''
+hook_post_source = '''
+  call denite#custom#map('normal', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+  call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+  call denite#custom#map('normal', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+  call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+'''
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+if = '!has("nvim")'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+if = '!has("nvim")'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  if has('win32') && (!has('gui_running') && !has('nvim'))
+    let g:lightline = {'colorscheme': 'one'}
+  else
+    let g:lightline = {'colorscheme': 'default'}
+  endif
+  if has('nvim')
+    let g:lightline.enable = {
+    \   'statusline': 1,
+    \   'tabline': 0
+    \ }
+  endif
+'''
+
+[[plugins]]
+repo = 'LeafCage/yankround.vim'
+hook_add = '''
+  let g:yankround_dir=$HOME . '/.vim/yankround'
+  nmap p <Plug>(yankround-p)
+  nmap P <Plug>(yankround-P)
+  nmap gp <Plug>(yankround-gp)
+  nmap gP <Plug>(yankround-gP)
+  nmap <C-p> <Plug>(yankround-prev)
+  nmap <C-n> <Plug>(yankround-next)
+'''
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+  let g:indent_guides_auto_colors = 0
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=2
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=3
+'''
+
+[[plugins]]
+repo = 'pepo-le/fcitx-mem-re'
+if = 'has("unix")'
+
+[[plugins]]
+repo = 'pepo-le/win-ime-con.nvim'
+if = 'has("win32")'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+  nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
+'''
+
+[[plugins]]
+repo = 'jistr/vim-nerdtree-tabs'
+hook_add = '''
+  let g:nerdtree_tabs_startup_cd = 0
+  let g:nerdtree_tabs_open_on_gui_startup = 0
+  nmap <Leader>E <Plug>NERDTreeTabsToggle<CR>
+'''
+
+[[plugins]]
+repo = 'thinca/vim-qfreplace'
+
+[[plugins]]
+repo = 'dhruvasagar/vim-table-mode'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+hook_add = '''
+  let g:winresizer_vert_resize = 1
+  let g:winresizer_horiz_resize = 1
+'''
+
+#************************************************
+# Session
+#************************************************
+[[plugins]]
+repo = 'xolox/vim-misc'
+
+[[plugins]]
+repo = 'xolox/vim-session'
+depends = 'vim-misc'
+hook_add = '''
+  let g:session_directory = '~/.vim/sessions'
+  " 現在のディレクトリ直下の .vimsessions/ を取得
+  let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+  " 存在すれば
+  if isdirectory(s:local_session_directory)
+    let g:session_directory = s:local_session_directory
+    let g:session_autosave = 'yes'
+    let g:session_autoload = 'yes'
+    " 自動保存
+    let g:session_autosave_periodic = 0
+  else
+    let g:session_autosave = 'no'
+    let g:session_autoload = 'no'
+  endif
+  unlet s:local_session_directory
+'''
+
+#************************************************
+# Markdonw
+#************************************************
+[[plugins]]
+repo = 'kannokanno/previm'
+on_ft = 'markdown'
+hook_add = '''
+  augroup PrevimSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+  augroup END
+'''
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+on_ft = 'markdown'
+
+#************************************************
+# Git
+#************************************************
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'

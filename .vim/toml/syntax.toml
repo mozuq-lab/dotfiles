@@ -1,0 +1,55 @@
+[[plugins]]
+repo = 'scrooloose/syntastic'
+hook_add = '''
+  let g:syntastic_mode_map = { 'mode': 'passive',
+    \ 'active_filetypes': [''],
+    \ 'passive_filetypes': [''] }
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_auto_jump = 0
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_php_checkers = ['phpcs', 'phpmd']
+  let g:syntastic_php_phpcs_args = '--standard=psr2'
+  let g:syntastic_java_javac_args = '-J-Duser.language=en'
+'''
+
+[[plugins]]
+repo = 'w0rp/ale'
+hook_add = '''
+  let g:ale_lint_on_enter = 0
+  let g:ale_linters = {
+  \   'html': ['htmlhint'],
+  \   'css': ['csslint'],
+  \   'sass': ['sass_lint'],
+  \   'javascript': ['tsserver', 'eslint'],
+  \   'typescript': ['tsserver', 'eslint'],
+  \   'go': ['govet', 'golint'],
+  \   'php': ['php'],
+  \   'python': ['pyls'],
+  \   'java': ['javac'],
+  \}
+  let g:ale_python_pylint_options = '--rcfile ~/.pylintrc.d/alerc'
+  let g:ale_java_javac_options = '-J-Duser.language=en'
+'''
+
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+hook_add = '''
+  let g:polyglot_disabled = ['php']
+'''
+
+[[plugins]]
+repo = 'nikvdp/ejs-syntax'
+on_ft = 'ejs'
+
+[[plugins]]
+repo = 'hail2u/vim-css3-syntax'
+
+[[plugins]]
+repo = 'vim-scripts/jQuery'
+
+[[plugins]]
+repo = 'Quramy/tsuquyomi'
+on_ft = 'typescript'
