@@ -4,6 +4,8 @@ hook_add = '''
   let g:deoplete#enable_at_startup = 1
   set completeopt=menu
   call deoplete#custom#source('_', 'max_info_width', 500)
+
+  call deoplete#custom#source('ale', 'filetypes', [''])
 '''
 
 [[plugins]]
