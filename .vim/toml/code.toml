@@ -1,13 +1,4 @@
 [[plugins]]
-repo = 'Shougo/deoplete.nvim'
-hook_add = '''
-  let g:deoplete#enable_at_startup = 1
-  set completeopt=menu
-  call deoplete#custom#source('_', 'max_info_width', 500)
-  call deoplete#custom#option('ignore_sources', {'_': ['ale']})
-'''
-
-[[plugins]]
 repo = 'Shougo/neosnippet'
 hook_add = '''
   imap <C-k>     <Plug>(neosnippet_expand_or_jump)

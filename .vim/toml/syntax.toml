@@ -23,11 +23,11 @@ hook_add = '''
   \   'html': ['htmlhint'],
   \   'css': ['csslint'],
   \   'sass': ['sass_lint'],
-  \   'javascript': ['tsserver', 'eslint'],
-  \   'typescript': ['tsserver', 'eslint'],
+  \   'javascript': ['eslint'],
+  \   'typescript': ['eslint'],
   \   'go': ['govet', 'golint'],
   \   'php': ['php'],
-  \   'python': ['pyls'],
+  \   'python': [],
   \   'java': ['javac'],
   \}
   let g:ale_python_pylint_options = '--rcfile ~/.pylintrc.d/alerc'
