@@ -49,7 +49,3 @@ repo = 'hail2u/vim-css3-syntax'
 
 [[plugins]]
 repo = 'vim-scripts/jQuery'
-
-[[plugins]]
-repo = 'Quramy/tsuquyomi'
-on_ft = 'typescript'
