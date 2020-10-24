@@ -1,9 +1,4 @@
 [[plugins]]
-repo = 'neoclide/coc.nvim'
-rev = 'release'
-merged = 0
-
-[[plugins]]
 repo = 'liuchengxu/vista.vim'
 hook_add = '''
   let g:vista_sidebar_width = 40
