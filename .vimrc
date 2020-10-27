@@ -173,9 +173,12 @@ if has('unix')
 else
   colorscheme elflord
 endif
-highlight Search ctermbg=3 ctermfg=8
-highlight Pmenu ctermbg=5 ctermfg=255
-highlight lCursor ctermbg=7 ctermfg=0
+augroup HighlightColor
+  autocmd!
+  autocmd VimEnter,ColorScheme * highlight Search ctermbg=3 ctermfg=8
+  autocmd VimEnter,ColorScheme * highlight Pmenu ctermbg=5 ctermfg=255 guibg=DarkMagenta
+  autocmd VimEnter,ColorScheme * highlight lCursor ctermbg=7 ctermfg=0
+augroup END
 
 " Quickfixを自動で閉じる
 augroup QfAutoCommands
