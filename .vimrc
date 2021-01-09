@@ -56,8 +56,8 @@ endif
 tnoremap <silent> <ESC> <C-\><C-n>
 
 " ctags
-nnoremap tj g<C-]>
-nnoremap tb <C-t>
+nnoremap Tj g<C-]>
+nnoremap Tb <C-t>
 
 " omni
 inoremap <C-f> <C-x><C-o>
