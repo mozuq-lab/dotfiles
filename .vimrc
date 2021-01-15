@@ -211,12 +211,13 @@ augroup FiletypeGroup
   autocmd!
   autocmd FileType vim setlocal sw=2 sts=2 ts=2 et
   autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.jsx set filetype=javascript.jsx
+  autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2 filetype=javascript.jsx
   autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
-  autocmd BufRead,BufNewFile *.ejs setlocal filetype=ejs
+  autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2 filetype=typescript.tsx
+  autocmd BufRead,BufNewFile *.html setlocal shiftwidth=2 tabstop=2 filetype=html
+  autocmd BufRead,BufNewFile *.ejs setlocal shiftwidth=2 tabstop=2 filetype=ejs.html
+  autocmd BufRead,BufNewFile *.css setlocal shiftwidth=2 tabstop=2
+  autocmd BufRead,BufNewFile *.scss setlocal shiftwidth=2 tabstop=2
   autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
   autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
 augroup END
