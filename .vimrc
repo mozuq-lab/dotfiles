@@ -192,7 +192,7 @@ if has('win32')
   if has('nvim')
     let g:python3_host_prog = $PYTHONHOME . '\python.exe'
   else
-    set pythonthreedll=$PYTHONHOME\python38.dll
+    set pythonthreedll=$PYTHONDLL
   endif
 endif
 
