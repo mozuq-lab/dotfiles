@@ -16,4 +16,4 @@
 [push]
     default = simple
 [credential]
-    helper = manager
+	helper = manager-core
