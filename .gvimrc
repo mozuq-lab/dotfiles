@@ -27,6 +27,13 @@ if has('unix')
   endif
 endif
 
+" GVimメニュー文字化け対策
+if has('win32') && ! has('nvim')
+  source $VIMRUNTIME/delmenu.vim
+  set langmenu=ja_jp.utf-8
+  source $VIMRUNTIME/menu.vim
+endif
+
 "************************************************
 " Local Setting
 "************************************************
