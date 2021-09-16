@@ -21,7 +21,8 @@ repo = 'tpope/vim-surround'
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
 hook_add = '''
-  let g:tcomment_opleader1 = ',c'
+  let g:tcomment_opleader1 = '<Leader>c'
+  let g:tcomment_mapleader1 = '<C-/>'
 '''
 
 [[plugins]]
