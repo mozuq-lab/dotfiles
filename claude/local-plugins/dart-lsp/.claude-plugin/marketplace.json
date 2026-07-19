@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "local-lsp",
+  "description": "Local LSP plugins not available in the official marketplace",
+  "owner": {
+    "name": "local"
+  },
+  "plugins": [
+    {
+      "name": "dart-lsp",
+      "description": "Dart language server for code intelligence and refactoring",
+      "version": "1.0.0",
+      "author": {
+        "name": "local"
+      },
+      "source": "./plugins/dart-lsp",
+      "category": "development",
+      "strict": false,
+      "lspServers": {
+        "dart": {
+          "command": "dart",
+          "args": [
+            "language-server",
+            "--protocol=lsp"
+          ],
+          "extensionToLanguage": {
+            ".dart": "dart"
+          }
+        }
+      }
+    }
+  ]
+}

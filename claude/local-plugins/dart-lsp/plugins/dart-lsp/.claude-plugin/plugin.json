@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "dart-lsp",
+  "description": "Dart language server for Claude Code, providing code intelligence, refactoring, and analysis.",
+  "version": "1.0.0",
+  "author": {
+    "name": "local"
+  },
+  "lspServers": {
+    "dart": {
+      "command": "dart",
+      "args": [
+        "language-server",
+        "--protocol=lsp"
+      ],
+      "extensionToLanguage": {
+        ".dart": "dart"
+      }
+    }
+  }
+}
