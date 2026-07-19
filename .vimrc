@@ -1,3 +1,8 @@
+" vim -u での起動時もcompatibleモードにしない
+if &compatible
+  set nocompatible
+endif
+
 "************************************************
 " Key Mapping
 "************************************************
@@ -7,12 +12,12 @@ noremap \ ,
 
 " 選択範囲をクリップボードにコピー
 vnoremap <C-c> "+y
-if has('!gui_running')
+if !has('gui_running')
   vnoremap <RightMouse> "+y
 endif
 " クリップボードからペースト
 noremap <MiddleMouse> "+p
-inoremap <C-v> <C-o>:set paste<CR><C-r>+<C-o>:set nopaste<CR>
+inoremap <C-v> <C-r><C-o>+
 
 " 矢印キーでは表示行単位で行移動する
 nnoremap <UP> gk
@@ -31,18 +36,11 @@ vnoremap > >gv
 nnoremap <C-LEFT> gT
 nnoremap <C-RIGHT> gt
 
-" " ウィンドウ移動
+" ウィンドウ移動
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
-" PasteMode
-set pastetoggle=<F9>
-" PasteModeを自動で抜ける
-augroup pasteMode
-  autocmd InsertLeave * set nopaste
-augroup END
 
 " tabnew
 nnoremap <silent> <Leader>t :<C-u>tabnew<CR>
@@ -55,63 +53,231 @@ else
 endif
 tnoremap <silent> <ESC> <C-\><C-n>
 
-" ctags
-nnoremap Tj g<C-]>
-nnoremap Tb <C-t>
-
-" omni
-inoremap <C-f> <C-x><C-o>
-
 "************************************************
-" dain
+" vim-plug
 "************************************************
-filetype off                   " Required!
+if has('nvim')
+  let s:plug_base = stdpath('data') . '/site'
+  let s:plug_home = stdpath('data') . '/plugged'
+elseif has('win32')
+  let s:plug_base = expand('~/vimfiles')
+  let s:plug_home = expand('~/vimfiles/plugged')
+else
+  let s:plug_base = expand('~/.vim')
+  let s:plug_home = expand('~/.vim/plugged')
+endif
+let s:plug_vim = s:plug_base . '/autoload/plug.vim'
 
-" dein dir
-let s:dein_dir = expand('~/.vim/dein')
-" dein.vim
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-" clone dein
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . s:dein_repo_dir
+" plug.vim がなければ自動ダウンロード
+if !filereadable(s:plug_vim)
+  execute '!curl -fLo ' . shellescape(s:plug_vim)
+    \ . ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-  call dein#add('Shougo/dein.vim')
-  "" -------------------------------
-  call dein#load_toml('~/.vim/toml/base.toml')
-  call dein#load_toml('~/.vim/toml/code.toml')
-  call dein#load_toml('~/.vim/toml/syntax.toml')
-  call dein#load_toml('~/.vim/toml/lsp.toml')
-  "" -------------------------------
-  call dein#end()
+call plug#begin(s:plug_home)
+
+" 見た目
+Plug 'itchyny/lightline.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+
+" ファイラ・検索
+Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" 編集
+Plug 'LeafCage/yankround.vim'
+Plug 'tpope/vim-surround'
+Plug 'tomtom/tcomment_vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'thinca/vim-qfreplace'
+Plug 'simeji/winresizer'
+
+" コーディング（LSP・補完は coc.nvim に集約）
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'liuchengxu/vista.vim'
+Plug 'thinca/vim-quickrun'
+Plug 'mattn/emmet-vim'
+
+" Markdown
+Plug 'previm/previm'
+Plug 'tyru/open-browser.vim'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" IME
+if has('win32')
+  Plug 'pepo-le/win-ime-con.nvim'
+elseif has('unix') && !has('mac')
+  Plug 'pepo-le/fcitx-mem-re'
 endif
 
-if dein#check_install()
-  call dein#install()
+call plug#end()
+
+" editorconfig は同梱パッケージを使用（Neovimは組み込み済み）
+if !has('nvim')
+  packadd! editorconfig
 endif
 
-filetype plugin indent on     " Required!
+filetype plugin indent on
 syntax on
+
+"************************************************
+" Plugin Settings
+"************************************************
+" lightline
+if has('win32') && (!has('gui_running') && !has('nvim'))
+  let g:lightline = {'colorscheme': 'one'}
+else
+  let g:lightline = {'colorscheme': 'default'}
+endif
+if has('nvim')
+  let g:lightline = extend(g:lightline, {'enable': {'statusline': 1, 'tabline': 0}})
+endif
+
+" fzf
+nnoremap <silent> <Leader>f :<C-u>Files<CR>
+nnoremap <silent> <Leader>b :<C-u>Buffers<CR>
+nnoremap <silent> <Leader>g :<C-u>Rg<CR>
+nnoremap <silent> <Leader>R :<C-u>History<CR>
+
+" NERDTree
+nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
+nnoremap <silent> <Leader>E :<C-u>NERDTreeFind<CR>
+
+" yankround
+let g:yankround_dir = expand('~/.local/state/vim/yankround')
+call mkdir(g:yankround_dir, 'p', 0700)
+nmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap gp <Plug>(yankround-gp)
+nmap gP <Plug>(yankround-gP)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
+
+" vim-indent-guides
+let g:indent_guides_auto_colors = 0
+augroup IndentGuidesColor
+  autocmd!
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=2
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=3
+augroup END
+
+" tcomment
+let g:tcomment_opleader1 = '<Leader>c'
+
+" vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" winresizer
+let g:winresizer_vert_resize = 1
+let g:winresizer_horiz_resize = 1
+
+" vista
+let g:vista_default_executive = 'coc'
+let g:vista_sidebar_width = 40
+let g:vista_echo_cursor = 0
+nnoremap <silent> <Leader>o :<C-u>Vista!!<CR>
+
+" quickrun
+nnoremap <Leader>q :QuickRun<CR>
+let g:quickrun_config = {
+  \ 'python': {
+  \   'command': 'python3'
+  \ },
+\ }
+
+" emmet
+let g:user_emmet_leader_key = '<c-e>'
+let g:user_emmet_settings = {
+\   'html': {
+\       'lang': "ja"
+\   }
+\ }
+
+" previm
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+
+"************************************************
+" coc.nvim
+"************************************************
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-pyright',
+  \ 'coc-snippets',
+\ ]
+
+" Tabで補完候補を移動、Enterで確定
+function! s:check_backspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#pum#next(1) :
+  \ <SID>check_backspace() ? "\<Tab>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+  \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" 手動で補完を起動
+inoremap <silent><expr> <C-f> coc#refresh()
+
+" コードジャンプ
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" 診断ジャンプ
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" リネーム・コードアクション
+nmap <Leader>rn <Plug>(coc-rename)
+nmap <Leader>ca <Plug>(coc-codeaction-cursor)
+
+" Kでドキュメント表示
+function! s:show_documentation() abort
+  if index(['vim', 'help'], &filetype) >= 0
+    execute 'help ' . expand('<cword>')
+  elseif CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" スニペット展開
+imap <C-k> <Plug>(coc-snippets-expand-jump)
 
 "************************************************
 " Basic Settings
 "************************************************
-set directory=$HOME/.vim/swap
-set backup
-set backupdir=$HOME/.vim/backup
-set undofile
-set undodir=$HOME/.vim/undo
-if has('nvim')
-  set viminfo+=n~/.vim/nviminfo
-else
-  set viminfo+=n~/.vim/viminfo
+" swap/backup/undo/viminfo はリポジトリ外の ~/.local/state/vim に保存する
+" （Neovimは既定で ~/.local/state/nvim を使うため設定不要）
+if !has('nvim')
+  let s:state_dir = expand('~/.local/state/vim')
+  for s:d in ['swap', 'backup', 'undo']
+    call mkdir(s:state_dir . '/' . s:d, 'p', 0700)
+  endfor
+  let &directory = s:state_dir . '/swap//'
+  let &backupdir = s:state_dir . '/backup//'
+  let &undodir = s:state_dir . '/undo'
+  let &viminfofile = s:state_dir . '/viminfo'
 endif
+set backup
+set undofile
 
 " Encoding
 set encoding=utf-8
@@ -161,10 +327,6 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 
 " IME
 set iminsert=0
-if has('multi_byte_ime') || has('xim')
-  " 挿入モードのIME状態を記憶しないようにする
-  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
-endif
 
 " Color
 if has('unix')
@@ -210,16 +372,12 @@ set clipboard=
 augroup FiletypeGroup
   autocmd!
   autocmd FileType vim setlocal sw=2 sts=2 ts=2 et
-  autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.jsx setlocal shiftwidth=2 tabstop=2 filetype=javascript.jsx
-  autocmd BufRead,BufNewFile *.ts setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.tsx setlocal shiftwidth=2 tabstop=2 filetype=typescript.tsx
-  autocmd BufRead,BufNewFile *.html setlocal shiftwidth=2 tabstop=2 filetype=html
+  autocmd FileType javascript,javascriptreact,typescript,typescriptreact
+    \ setlocal shiftwidth=2 tabstop=2
+  autocmd FileType html,css,scss,json,yaml setlocal shiftwidth=2 tabstop=2
   autocmd BufRead,BufNewFile *.ejs setlocal shiftwidth=2 tabstop=2 filetype=ejs.html
-  autocmd BufRead,BufNewFile *.css setlocal shiftwidth=2 tabstop=2
-  autocmd BufRead,BufNewFile *.scss setlocal shiftwidth=2 tabstop=2
   autocmd BufRead,BufNewFile *.ctp setlocal filetype=php
-  autocmd BufRead,BufNewFile *.go setlocal filetype=go noexpandtab
+  autocmd FileType go setlocal noexpandtab
 augroup END
 
 "************************************************
