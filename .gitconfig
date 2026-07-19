@@ -1,6 +1,5 @@
 [user]
     name = mozuq
-[user]
     email = hello@mozuq-lab.com
 [core]
     autocrlf = input
@@ -15,8 +14,9 @@
     diffn = diff --name-only
 [push]
     default = simple
-[credential "helperselector"]
-    selected = manager-core
+[include]
+    # OS別設定（setup.sh / setup.bat が gitconfig.mac / gitconfig.win をリンクする）
+    path = ~/.gitconfig.os
 [secrets]
     providers = git secrets --aws-provider
     patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
@@ -26,5 +26,3 @@
     allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [init]
     templateDir = ~/.git-templates/git-secrets
-[credential "https://git-codecommit.us-east-1.amazonaws.com"]
-    provider = generic
