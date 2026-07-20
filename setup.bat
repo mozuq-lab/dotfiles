@@ -38,10 +38,23 @@ if exist %USERPROFILE%\.claude\local-plugins\dart-lsp rmdir %USERPROFILE%\.claud
 mklink /d %USERPROFILE%\.claude\local-plugins\dart-lsp %DOTFILES%\claude\local-plugins\dart-lsp
 
 rem Codex
-if not exist %USERPROFILE%\.codex\rules mkdir %USERPROFILE%\.codex\rules
-if exist %USERPROFILE%\.codex\hooks.json del %USERPROFILE%\.codex\hooks.json
-mklink %USERPROFILE%\.codex\hooks.json %DOTFILES%\codex\hooks.json
-if exist %USERPROFILE%\.codex\rules\default.rules del %USERPROFILE%\.codex\rules\default.rules
-mklink %USERPROFILE%\.codex\rules\default.rules %DOTFILES%\codex\rules\default.rules
+if not exist "%USERPROFILE%\.codex\rules" (
+    mkdir "%USERPROFILE%\.codex\rules"
+    if errorlevel 1 exit /b 1
+)
+if exist "%USERPROFILE%\.codex\hooks.json" (
+    del "%USERPROFILE%\.codex\hooks.json"
+    if errorlevel 1 exit /b 1
+)
+mklink "%USERPROFILE%\.codex\hooks.json" "%DOTFILES%\codex\hooks.json"
+if errorlevel 1 exit /b 1
+if exist "%USERPROFILE%\.codex\rules\default.rules" (
+    del "%USERPROFILE%\.codex\rules\default.rules"
+    if errorlevel 1 exit /b 1
+)
+mklink "%USERPROFILE%\.codex\rules\default.rules" "%DOTFILES%\codex\rules\default.rules"
+if errorlevel 1 exit /b 1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%DOTFILES%\codex\install-permissions.ps1" -ConfigPath "%USERPROFILE%\.codex\config.toml" -FragmentPath "%DOTFILES%\codex\permissions.toml"
+if errorlevel 1 exit /b 1
 
 endlocal

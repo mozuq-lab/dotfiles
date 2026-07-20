@@ -1,5 +1,29 @@
-prefix_rule(pattern=["git", "switch"], decision="allow")
-prefix_rule(pattern=["npm", "run", "test:e2e"], decision="allow")
-prefix_rule(pattern=["gh", "auth", "status"], decision="allow")
-prefix_rule(pattern=["git", "add"], decision="allow")
-prefix_rule(pattern=["git", "commit"], decision="allow")
+prefix_rule(
+    pattern = ["git", "switch"],
+    decision = "prompt",
+    justification = "This changes the worktree outside the sandbox; review the target branch first.",
+)
+
+prefix_rule(
+    pattern = ["npm", "run", "test:e2e"],
+    decision = "prompt",
+    justification = "Project scripts can execute arbitrary commands outside the sandbox.",
+)
+
+prefix_rule(
+    pattern = ["gh", "auth", "status"],
+    decision = "prompt",
+    justification = "This can access authentication metadata outside the sandbox.",
+)
+
+prefix_rule(
+    pattern = ["git", "add"],
+    decision = "prompt",
+    justification = "This reads files and writes the Git index outside the sandbox.",
+)
+
+prefix_rule(
+    pattern = ["git", "commit"],
+    decision = "prompt",
+    justification = "This writes Git metadata and can execute repository hooks outside the sandbox.",
+)

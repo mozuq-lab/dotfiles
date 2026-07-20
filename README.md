@@ -77,6 +77,17 @@ LSP・補完・リントは coc.nvim に集約している。拡張は `g:coc_gl
   マシンローカル設定（`~/.vim/localrc/vimrc.vim`・gvimrc.vim。git 管理外）の置き場
 - `claude/`・`codex/` は `~/.claude`・`~/.codex` へ**ファイル単位**でリンクする。
   ディレクトリ丸ごとリンクしないこと（セッション履歴・認証情報などの状態ファイルが同居しているため）
+- Codex の `hooks.json` と `rules/default.rules` はリンクし、権限プロファイルは
+  `codex/permissions.toml` の内容を既存の `~/.codex/config.toml` へマージする。
+  モデル・プラグイン・プロジェクト信頼設定など、Codex が管理する既存項目は保持される
+- Codex の権限プロファイルは Codex 0.138.0 以降が必要。旧式の `sandbox_mode` または
+  `[sandbox_workspace_write]` が `~/.codex/config.toml` に残っている場合、競合を避けるためセットアップは停止する
+- Codex はワークスペース外のファイルを既定で読み取れないようにし、実行に必要な
+  `:minimal` のみ読み取りを許可する。権限プロファイルはsandbox内のローカルコマンドに適用され、
+  ユーザーまたは自動レビューが承認したsandbox外実行には適用されない
+- 権限設定の更新前に `~/.codex/config.toml.dotfiles-backup` を作成する。
+  更新前後の指紋比較で既存設定との競合を検知した場合は、上書きせず停止する。
+  排他ロックにはプロセス ID を記録し、異常終了後の古いロックは次回実行時に回収する
 - `.gitconfig` は `~/.gitconfig.os` を include しており、OS 別の credential helper を
   `setup.sh`（→ `gitconfig.mac`）/ `setup.bat`（→ `gitconfig.win`）が切り替える
 - `.gitignore` はこのリポジトリの ignore と git の `core.excludesfile`（グローバル ignore）を兼ねる

@@ -37,3 +37,6 @@ ln -snf "$DOTFILES"/claude/local-plugins/dart-lsp "$HOME"/.claude/local-plugins/
 mkdir -p "$HOME"/.codex/rules
 ln -snf "$DOTFILES"/codex/hooks.json "$HOME"/.codex/hooks.json
 ln -snf "$DOTFILES"/codex/rules/default.rules "$HOME"/.codex/rules/default.rules
+bash "$DOTFILES"/codex/install-permissions.sh \
+    "$HOME"/.codex/config.toml \
+    "$DOTFILES"/codex/permissions.toml
