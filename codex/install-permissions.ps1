@@ -7,7 +7,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$profileName = "dotfiles-workspace"
+$profileName = "personal-workspace"
 $beginMarker = "# >>> dotfiles managed Codex permissions >>>"
 $endMarker = "# <<< dotfiles managed Codex permissions <<<"
 

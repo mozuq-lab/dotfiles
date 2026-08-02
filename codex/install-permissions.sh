@@ -8,7 +8,7 @@ fi
 
 CONFIG_PATH=$1
 FRAGMENT_PATH=$2
-PROFILE_NAME=dotfiles-workspace
+PROFILE_NAME=personal-workspace
 BEGIN_MARKER="# >>> dotfiles managed Codex permissions >>>"
 END_MARKER="# <<< dotfiles managed Codex permissions <<<"
 

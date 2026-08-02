@@ -57,10 +57,16 @@ cp "$CONFIG_PATH" "$FIRST_CONFIG"
 # The installed config asks for approvals and keeps a single managed profile.
 # Users can explicitly launch `codex --yolo` when they intend to bypass both
 # approvals and the sandbox for that session.
-assert_file_line "$CONFIG_PATH" 'default_permissions = "dotfiles-workspace"'
+assert_file_line "$CONFIG_PATH" 'default_permissions = "personal-workspace"'
+assert_file_line "$CONFIG_PATH" '[permissions.personal-workspace]'
+assert_file_line "$CONFIG_PATH" 'description = "Personal workspace access with sensitive files denied."'
 assert_file_line "$CONFIG_PATH" 'approval_policy = "on-request"'
 assert_file_line "$CONFIG_PATH" '".git" = "write"'
 assert_file_line "$CONFIG_PATH" '"~/.ssh" = "deny"'
+if grep -Fq '[permissions.dotfiles-workspace' "$CONFIG_PATH"; then
+    echo "Generated config still contains the old managed profile." >&2
+    exit 1
+fi
 if grep -Fq "dotfiles-trusted" "$CONFIG_PATH" || [ -e "$SCRIPT_DIR/trusted.config.toml" ]; then
     echo "Unexpected trusted Codex profile; use codex --yolo for an explicit bypass session." >&2
     exit 1
@@ -70,18 +76,47 @@ fi
 bash "$INSTALLER" "$CONFIG_PATH" "$PERMISSIONS_FRAGMENT" >/dev/null
 cmp -s "$FIRST_CONFIG" "$CONFIG_PATH"
 
+# A prior managed profile must migrate cleanly, preserving the backup exactly.
+MIGRATION_CONFIG="$TEST_DIR/migration.toml"
+MIGRATION_ORIGINAL="$TEST_DIR/migration-original.toml"
+printf '%s\n' \
+    'default_permissions = "dotfiles-workspace"' \
+    'model = "gpt-5.6"' \
+    '# >>> dotfiles managed Codex permissions >>>' \
+    '[permissions.dotfiles-workspace]' \
+    'extends = ":workspace"' \
+    '# <<< dotfiles managed Codex permissions <<<' > "$MIGRATION_CONFIG"
+cp "$MIGRATION_CONFIG" "$MIGRATION_ORIGINAL"
+bash "$INSTALLER" "$MIGRATION_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null
+cmp -s "$MIGRATION_ORIGINAL" "$MIGRATION_CONFIG.dotfiles-backup"
+assert_file_line "$MIGRATION_CONFIG" 'model = "gpt-5.6"'
+assert_file_line "$MIGRATION_CONFIG" 'default_permissions = "personal-workspace"'
+assert_file_line "$MIGRATION_CONFIG" '[permissions.personal-workspace]'
+if grep -Fq '[permissions.dotfiles-workspace' "$MIGRATION_CONFIG"; then
+    echo "Migration left the old managed profile in place." >&2
+    exit 1
+fi
+
 # Refuse to overwrite an unmanaged profile with the managed profile name.
 COLLISION_CONFIG="$TEST_DIR/collision.toml"
 COLLISION_ERROR="$TEST_DIR/collision-error.log"
-printf '%s\n' '[permissions.dotfiles-workspace]' 'extends = ":workspace"' > "$COLLISION_CONFIG"
+printf '%s\n' '[permissions.personal-workspace]' 'extends = ":workspace"' > "$COLLISION_CONFIG"
 if bash "$INSTALLER" "$COLLISION_CONFIG" "$PERMISSIONS_FRAGMENT" 2>"$COLLISION_ERROR"; then
     echo "Installer unexpectedly replaced an unmanaged workspace profile." >&2
     exit 1
 fi
-if ! grep -Fq "A non-managed permissions.dotfiles-workspace profile already exists" "$COLLISION_ERROR"; then
-    echo "Installer did not report the workspace profile collision." >&2
+if ! grep -Fq "A non-managed permissions.personal-workspace profile already exists" "$COLLISION_ERROR"; then
+    echo "Installer did not report the personal workspace profile collision." >&2
     exit 1
 fi
+
+# An unmanaged legacy profile belongs to the user and must be retained.
+LEGACY_CONFIG="$TEST_DIR/legacy-profile.toml"
+printf '%s\n' '[permissions.dotfiles-workspace]' 'extends = ":workspace"' > "$LEGACY_CONFIG"
+bash "$INSTALLER" "$LEGACY_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null
+assert_file_line "$LEGACY_CONFIG" 'default_permissions = "personal-workspace"'
+assert_file_line "$LEGACY_CONFIG" '[permissions.personal-workspace]'
+assert_file_line "$LEGACY_CONFIG" '[permissions.dotfiles-workspace]'
 
 if ! command -v codex >/dev/null 2>&1; then
     echo "Codex CLI is required to validate the installed config and execpolicy rules." >&2

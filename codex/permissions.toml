@@ -1,8 +1,8 @@
-[permissions.dotfiles-workspace]
-description = "Workspace access with sensitive files denied."
+[permissions.personal-workspace]
+description = "Personal workspace access with sensitive files denied."
 extends = ":workspace"
 
-[permissions.dotfiles-workspace.filesystem]
+[permissions.personal-workspace.filesystem]
 glob_scan_max_depth = 16
 ":root" = "deny"
 ":minimal" = "read"
@@ -26,7 +26,7 @@ glob_scan_max_depth = 16
 "~/.zsh_history" = "deny"
 "~/.bash_history" = "deny"
 
-[permissions.dotfiles-workspace.filesystem.":workspace_roots"]
+[permissions.personal-workspace.filesystem.":workspace_roots"]
 ".git" = "write"
 "**/.env" = "deny"
 "**/.env.local" = "deny"
