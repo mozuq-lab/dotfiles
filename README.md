@@ -80,8 +80,8 @@ LSP・補完・リントは coc.nvim に集約している。拡張は `g:coc_gl
   マシンローカル設定（`~/.vim/localrc/vimrc.vim`・gvimrc.vim。git 管理外）の置き場
 - `claude/`・`codex/` は `~/.claude`・`~/.codex` へ**ファイル単位**でリンクする。
   ディレクトリ丸ごとリンクしないこと（セッション履歴・認証情報などの状態ファイルが同居しているため）
-- Codex の `hooks.json` と `rules/default.rules` はリンクし、権限プロファイルは
-  `codex/permissions.toml` の内容を既存の `~/.codex/config.toml` へマージする。
+- Codex の `hooks.json` と `rules/default.rules` はリンクし、通常利用する権限プロファイル
+  `personal-workspace` は `codex/permissions.toml` の内容を既存の `~/.codex/config.toml` へマージする。
   モデル・プラグイン・プロジェクト信頼設定など、Codex が管理する既存項目は保持される
 - Codex の権限プロファイルは Codex 0.138.0 以降が必要。旧式の `sandbox_mode` または
   `[sandbox_workspace_write]` が `~/.codex/config.toml` に残っている場合、競合を避けるためセットアップは停止する

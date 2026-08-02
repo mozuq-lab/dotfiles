@@ -23,6 +23,21 @@ assert_file_line() {
     fi
 }
 
+assert_preserved_config_block() {
+    installed_path=$1
+    original_path=$2
+    description=$3
+    extracted_path=$4
+    original_line_count=$(wc -l < "$original_path")
+    original_end_line=$((3 + original_line_count))
+
+    sed -n "4,${original_end_line}p" "$installed_path" > "$extracted_path"
+    if ! cmp -s "$original_path" "$extracted_path"; then
+        echo "Installer did not preserve $description byte-for-byte." >&2
+        return 1
+    fi
+}
+
 # Codex must be able to load the complete instructions and resources for both
 # standalone and plugin-provided skills. NVM hosts the local node/npm/codex
 # executables on this machine, and the per-user TMPDIR is needed by compilers
@@ -117,6 +132,88 @@ bash "$INSTALLER" "$LEGACY_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null
 assert_file_line "$LEGACY_CONFIG" 'default_permissions = "personal-workspace"'
 assert_file_line "$LEGACY_CONFIG" '[permissions.personal-workspace]'
 assert_file_line "$LEGACY_CONFIG" '[permissions.dotfiles-workspace]'
+
+# TOML-looking lines inside multiline strings are unrelated string content.
+MULTILINE_FAILURES=0
+BASIC_STRING_CONFIG="$TEST_DIR/multiline-basic.toml"
+BASIC_STRING_ORIGINAL="$TEST_DIR/multiline-basic-original.toml"
+BASIC_STRING_ERROR="$TEST_DIR/multiline-basic-error.log"
+printf '%s\n' \
+    'basic_note = """' \
+    'approval_policy = "never"' \
+    '# >>> dotfiles managed Codex permissions >>>' \
+    'sandbox_mode = "danger-full-access"' \
+    '[permissions.personal-workspace]' \
+    '# <<< dotfiles managed Codex permissions <<<' \
+    '"""' > "$BASIC_STRING_CONFIG"
+cp "$BASIC_STRING_CONFIG" "$BASIC_STRING_ORIGINAL"
+if bash "$INSTALLER" "$BASIC_STRING_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null 2>"$BASIC_STRING_ERROR"; then
+    if ! assert_preserved_config_block \
+        "$BASIC_STRING_CONFIG" \
+        "$BASIC_STRING_ORIGINAL" \
+        "a multiline basic string" \
+        "$TEST_DIR/multiline-basic-preserved.toml"; then
+        MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+    fi
+else
+    echo "Installer unexpectedly rejected a multiline basic string." >&2
+    sed 's/^/  /' "$BASIC_STRING_ERROR" >&2
+    MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+fi
+
+LITERAL_STRING_CONFIG="$TEST_DIR/multiline-literal.toml"
+LITERAL_STRING_ORIGINAL="$TEST_DIR/multiline-literal-original.toml"
+LITERAL_STRING_ERROR="$TEST_DIR/multiline-literal-error.log"
+printf '%s\n' \
+    "literal_note = '''" \
+    'default_permissions = "other"' \
+    '# <<< dotfiles managed Codex permissions <<<' \
+    'sandbox_workspace_write = true' \
+    'permissions.personal-workspace = { extends = ":workspace" }' \
+    '[permissions.personal-workspace]' \
+    "'''" > "$LITERAL_STRING_CONFIG"
+cp "$LITERAL_STRING_CONFIG" "$LITERAL_STRING_ORIGINAL"
+if bash "$INSTALLER" "$LITERAL_STRING_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null 2>"$LITERAL_STRING_ERROR"; then
+    if ! assert_preserved_config_block \
+        "$LITERAL_STRING_CONFIG" \
+        "$LITERAL_STRING_ORIGINAL" \
+        "a multiline literal string" \
+        "$TEST_DIR/multiline-literal-preserved.toml"; then
+        MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+    fi
+else
+    echo "Installer unexpectedly rejected a multiline literal string." >&2
+    sed 's/^/  /' "$LITERAL_STRING_ERROR" >&2
+    MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+fi
+
+# A matching path component in another table is not the managed profile.
+UNRELATED_TABLE_CONFIG="$TEST_DIR/unrelated-table.toml"
+UNRELATED_TABLE_ORIGINAL="$TEST_DIR/unrelated-table-original.toml"
+UNRELATED_TABLE_ERROR="$TEST_DIR/unrelated-table-error.log"
+printf '%s\n' \
+    '[projects."/Users/me/personal-workspace"]' \
+    'trust_level = "trusted"' \
+    '["permissions.personal-workspace"]' \
+    'owner = "user"' > "$UNRELATED_TABLE_CONFIG"
+cp "$UNRELATED_TABLE_CONFIG" "$UNRELATED_TABLE_ORIGINAL"
+if bash "$INSTALLER" "$UNRELATED_TABLE_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null 2>"$UNRELATED_TABLE_ERROR"; then
+    if ! assert_preserved_config_block \
+        "$UNRELATED_TABLE_CONFIG" \
+        "$UNRELATED_TABLE_ORIGINAL" \
+        "an unrelated personal-workspace table" \
+        "$TEST_DIR/unrelated-table-preserved.toml"; then
+        MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+    fi
+else
+    echo "Installer unexpectedly rejected an unrelated personal-workspace table." >&2
+    sed 's/^/  /' "$UNRELATED_TABLE_ERROR" >&2
+    MULTILINE_FAILURES=$((MULTILINE_FAILURES + 1))
+fi
+
+if [ "$MULTILINE_FAILURES" -ne 0 ]; then
+    exit 1
+fi
 
 if ! command -v codex >/dev/null 2>&1; then
     echo "Codex CLI is required to validate the installed config and execpolicy rules." >&2

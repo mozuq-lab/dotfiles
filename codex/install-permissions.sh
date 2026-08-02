@@ -158,6 +158,108 @@ else
 fi
 
 awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name="$PROFILE_NAME" '
+    function basic_delimiter_is_escaped(line, position, backslash_count, index_position) {
+        backslash_count = 0
+        for (index_position = position - 1;
+             index_position > 0 && substr(line, index_position, 1) == "\\";
+             index_position--) {
+            backslash_count++
+        }
+        return backslash_count % 2 == 1
+    }
+    function multiline_state_after(line, state, index_position, character, single_string) {
+        single_string = ""
+        index_position = 1
+        while (index_position <= length(line)) {
+            if (state == "basic") {
+                if (substr(line, index_position, 3) == basic_delimiter &&
+                    !basic_delimiter_is_escaped(line, index_position)) {
+                    state = ""
+                    index_position += 3
+                    continue
+                }
+                index_position++
+                continue
+            }
+            if (state == "literal") {
+                if (substr(line, index_position, 3) == literal_delimiter) {
+                    state = ""
+                    index_position += 3
+                    continue
+                }
+                index_position++
+                continue
+            }
+
+            character = substr(line, index_position, 1)
+            if (single_string == "basic") {
+                if (character == "\\") {
+                    index_position += 2
+                    continue
+                }
+                if (character == "\"") {
+                    single_string = ""
+                }
+                index_position++
+                continue
+            }
+            if (single_string == "literal") {
+                if (character == single_quote) {
+                    single_string = ""
+                }
+                index_position++
+                continue
+            }
+
+            if (character == "#") {
+                break
+            }
+            if (substr(line, index_position, 3) == basic_delimiter) {
+                state = "basic"
+                index_position += 3
+                continue
+            }
+            if (substr(line, index_position, 3) == literal_delimiter) {
+                state = "literal"
+                index_position += 3
+                continue
+            }
+            if (character == "\"") {
+                single_string = "basic"
+            } else if (character == single_quote) {
+                single_string = "literal"
+            }
+            index_position++
+        }
+        return state
+    }
+    BEGIN {
+        basic_delimiter = "\"\"\""
+        single_quote = sprintf("%c", 39)
+        literal_delimiter = single_quote single_quote single_quote
+        permissions_component = "(permissions|\"permissions\"|" single_quote "permissions" single_quote ")"
+        profile_component = "(" profile_name "|\"" profile_name "\"|" single_quote profile_name single_quote ")"
+        managed_profile_table_pattern = "^\\[[[:space:]]*" permissions_component \
+            "[[:space:]]*[.][[:space:]]*" profile_component \
+            "[[:space:]]*\\][[:space:]]*(#.*)?$"
+        managed_profile_array_table_pattern = "^\\[\\[[[:space:]]*" permissions_component \
+            "[[:space:]]*[.][[:space:]]*" profile_component \
+            "[[:space:]]*\\]\\][[:space:]]*(#.*)?$"
+    }
+    {
+        if (multiline_string != "") {
+            if (!in_managed_block && !discard_multiline_string) {
+                print
+            }
+            multiline_string = multiline_state_after($0, multiline_string)
+            if (multiline_string == "") {
+                discard_multiline_string = 0
+            }
+            next
+        }
+
+        next_multiline_string = multiline_state_after($0, "")
+    }
     $0 == begin_marker {
         if (in_managed_block) {
             print "Nested Codex permissions marker in config.toml" > "/dev/stderr"
@@ -174,7 +276,10 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
         in_managed_block = 0
         next
     }
-    in_managed_block { next }
+    in_managed_block {
+        multiline_string = next_multiline_string
+        next
+    }
     {
         trimmed_line = $0
         sub(/^[[:space:]]*/, "", trimmed_line)
@@ -192,6 +297,8 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
 
             if (!seen_table &&
                 (normalized_key == "default_permissions" || normalized_key == "approval_policy")) {
+                multiline_string = next_multiline_string
+                discard_multiline_string = multiline_string != ""
                 next
             }
             if (normalized_key ~ /(^|[.])(sandbox_mode|sandbox_workspace_write)($|[.])/) {
@@ -212,7 +319,8 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
                 print "Remove sandbox_mode and sandbox_workspace_write from config.toml first." > "/dev/stderr"
                 exit 1
             }
-            if (index(trimmed_line, profile_name) != 0) {
+            if (trimmed_line ~ managed_profile_table_pattern ||
+                trimmed_line ~ managed_profile_array_table_pattern) {
                 print "A non-managed permissions." profile_name " profile already exists in config.toml." > "/dev/stderr"
                 exit 1
             }
@@ -222,6 +330,7 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
         }
 
         print
+        multiline_string = next_multiline_string
     }
     END {
         if (in_managed_block) {

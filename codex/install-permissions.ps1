@@ -122,6 +122,96 @@ function Test-GeneratedToml {
     Write-Warning "No TOML parser was available; syntax validation was skipped."
 }
 
+function Test-BasicDelimiterEscaped {
+    param(
+        [string]$Line,
+        [int]$Position
+    )
+
+    $backslashCount = 0
+    for ($index = $Position - 1; $index -ge 0 -and $Line[$index] -eq [char]92; $index--) {
+        $backslashCount++
+    }
+    return $backslashCount % 2 -eq 1
+}
+
+function Get-MultilineStringState {
+    param(
+        [string]$Line,
+        [string]$State
+    )
+
+    $basicDelimiter = '"""'
+    $literalDelimiter = "'''"
+    $singleString = ""
+    $index = 0
+    while ($index -lt $Line.Length) {
+        if ($State -eq "basic") {
+            if ($index + 2 -lt $Line.Length -and
+                $Line.Substring($index, 3) -eq $basicDelimiter -and
+                -not (Test-BasicDelimiterEscaped -Line $Line -Position $index)) {
+                $State = ""
+                $index += 3
+                continue
+            }
+            $index++
+            continue
+        }
+        if ($State -eq "literal") {
+            if ($index + 2 -lt $Line.Length -and $Line.Substring($index, 3) -eq $literalDelimiter) {
+                $State = ""
+                $index += 3
+                continue
+            }
+            $index++
+            continue
+        }
+
+        $character = $Line[$index]
+        if ($singleString -eq "basic") {
+            if ($character -eq [char]92) {
+                $index += 2
+                continue
+            }
+            if ($character -eq [char]34) {
+                $singleString = ""
+            }
+            $index++
+            continue
+        }
+        if ($singleString -eq "literal") {
+            if ($character -eq [char]39) {
+                $singleString = ""
+            }
+            $index++
+            continue
+        }
+
+        if ($character -eq [char]35) {
+            break
+        }
+        if ($index + 2 -lt $Line.Length -and $Line.Substring($index, 3) -eq $basicDelimiter) {
+            $State = "basic"
+            $index += 3
+            continue
+        }
+        if ($index + 2 -lt $Line.Length -and $Line.Substring($index, 3) -eq $literalDelimiter) {
+            $State = "literal"
+            $index += 3
+            continue
+        }
+        if ($character -eq [char]34) {
+            $singleString = "basic"
+        }
+        elseif ($character -eq [char]39) {
+            $singleString = "literal"
+        }
+        $index++
+    }
+
+    return $State
+}
+
 $writePath = Resolve-ConfigWritePath $ConfigPath
 $writeDirectory = Split-Path -Parent $writePath
 if (-not (Test-Path -LiteralPath $writeDirectory -PathType Container)) {
@@ -192,10 +282,31 @@ try {
 
     $keptLines = [System.Collections.Generic.List[string]]::new()
     $inManagedBlock = $false
+    $multilineStringState = ""
+    $discardMultilineString = $false
     $seenTable = $false
     $tableHeaderPattern = '^\s*\[\[?[^,]+\]\]?\s*(?:#.*)?$'
+    $permissionsComponent = '(?:permissions|"permissions"|''permissions'')'
+    $escapedProfileName = [System.Text.RegularExpressions.Regex]::Escape($profileName)
+    $profileComponent = "(?:$escapedProfileName|`"$escapedProfileName`"|'$escapedProfileName')"
+    $managedProfileTablePattern = '^\s*\[\s*' + $permissionsComponent +
+        '\s*\.\s*' + $profileComponent + '\s*\]\s*(?:#.*)?$'
+    $managedProfileArrayTablePattern = '^\s*\[\[\s*' + $permissionsComponent +
+        '\s*\.\s*' + $profileComponent + '\s*\]\]\s*(?:#.*)?$'
 
     foreach ($line in [System.Text.RegularExpressions.Regex]::Split($content, "\r?\n")) {
+        if ($multilineStringState.Length -gt 0) {
+            if (-not $inManagedBlock -and -not $discardMultilineString) {
+                $keptLines.Add($line)
+            }
+            $multilineStringState = Get-MultilineStringState -Line $line -State $multilineStringState
+            if ($multilineStringState.Length -eq 0) {
+                $discardMultilineString = $false
+            }
+            continue
+        }
+
+        $nextMultilineStringState = Get-MultilineStringState -Line $line -State ""
         if ($line -eq $beginMarker) {
             if ($inManagedBlock) {
                 throw "Nested Codex permissions marker in config.toml"
@@ -213,6 +324,7 @@ try {
         }
 
         if ($inManagedBlock) {
+            $multilineStringState = $nextMultilineStringState
             continue
         }
 
@@ -229,6 +341,8 @@ try {
             $normalizedKey = $keyPart.Replace(" ", "").Replace("`t", "").Replace('"', "").Replace("'", "")
 
             if (-not $seenTable -and $normalizedKey -in @("default_permissions", "approval_policy")) {
+                $multilineStringState = $nextMultilineStringState
+                $discardMultilineString = $multilineStringState.Length -gt 0
                 continue
             }
             if ($normalizedKey -match '(^|\.)(sandbox_mode|sandbox_workspace_write)($|\.)') {
@@ -243,7 +357,8 @@ try {
             if ($trimmedLine -match '(?:sandbox_mode|sandbox_workspace_write)') {
                 throw "Cannot install Codex permission profile while legacy sandbox settings are present. Remove sandbox_mode and sandbox_workspace_write from config.toml first."
             }
-            if ($trimmedLine.Contains($profileName)) {
+            if ([System.Text.RegularExpressions.Regex]::IsMatch($trimmedLine, $managedProfileTablePattern) -or
+                [System.Text.RegularExpressions.Regex]::IsMatch($trimmedLine, $managedProfileArrayTablePattern)) {
                 throw "A non-managed permissions.$profileName profile already exists in config.toml."
             }
             if ($line -match $tableHeaderPattern) {
@@ -252,6 +367,7 @@ try {
         }
 
         $keptLines.Add($line)
+        $multilineStringState = $nextMultilineStringState
     }
 
     if ($inManagedBlock) {
