@@ -10,8 +10,11 @@ for /d %%i in (.*) do (
     )
 )
 rem ドットファイルのリンク（ファイル）
+rem .zshrc / .zshenv は macOS 専用のため Windows ではリンクしない
 for %%i in (.*) do (
-    mklink %USERPROFILE%\%%i %DOTFILES%\%%i
+    if /i not "%%i" == ".zshrc" if /i not "%%i" == ".zshenv" (
+        mklink %USERPROFILE%\%%i %DOTFILES%\%%i
+    )
 )
 
 rem OS別 gitconfig（.gitconfig の include から参照される）

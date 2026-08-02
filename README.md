@@ -19,6 +19,9 @@ git-secrets を初めて使うマシンでは、テンプレートも作成す�
 git secrets --install ~/.git-templates/git-secrets
 ```
 
+`setup.sh` は既存の `~/.zshrc` などを `~/.zshrc.dotfiles-backup` へ退避してからリンクに置き換える。
+そのマシンだけで使う設定は `~/.zshrc.local`・`~/.zshenv.local` に書く（どちらも git 管理外）。
+
 ### Windows
 
 `setup.bat` を管理者権限（または開発者モードを有効にした状態）で実行する。
@@ -88,6 +91,14 @@ LSP・補完・リントは coc.nvim に集約している。拡張は `g:coc_gl
 - 権限設定の更新前に `~/.codex/config.toml.dotfiles-backup` を作成する。
   更新前後の指紋比較で既存設定との競合を検知した場合は、上書きせず停止する。
   排他ロックにはプロセス ID を記録し、異常終了後の古いロックは次回実行時に回収する
+- zsh の設定は `.zshenv`（全シェル共通の PATH）と `.zshrc`（対話シェル用）に分け、
+  それぞれ末尾で `~/.zshenv.local`・`~/.zshrc.local` を読む。マシン固有のパスや
+  自作ツールはこちらに置き、リポジトリ側にはハードコードした絶対パスを持ち込まない
+- LM Studio・Docker Desktop・Antigravity などのインストーラは `~/.zshrc` に設定を
+  追記してくる。リンク経由でリポジトリが書き換わるので、`git status` に出たら
+  共通化するか `~/.zshrc.local` へ移すかを判断する
+- `.zshrc` / `.zshenv` は macOS 専用のため `setup.bat` ではリンクしない
+  （Windows のシェルは nyagos）
 - `.gitconfig` は `~/.gitconfig.os` を include しており、OS 別の credential helper を
   `setup.sh`（→ `gitconfig.mac`）/ `setup.bat`（→ `gitconfig.win`）が切り替える
 - `.gitignore` はこのリポジトリの ignore と git の `core.excludesfile`（グローバル ignore）を兼ねる

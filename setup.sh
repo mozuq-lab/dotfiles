@@ -15,6 +15,12 @@ do
     case "$f" in
         .git|.DS_Store|.desktop|.nyagos|.vim) continue ;;
     esac
+    # 既存の実ファイル（ツールのインストーラが書いた ~/.zshrc など）は
+    # リンクで潰さずに退避する。2回目以降はリンクなのでこの分岐に入らない
+    if [ -f "$HOME"/"$f" ] && [ ! -L "$HOME"/"$f" ]; then
+        mv "$HOME"/"$f" "$HOME"/"$f".dotfiles-backup
+        echo "既存の $HOME/$f を $HOME/$f.dotfiles-backup へ退避した"
+    fi
     ln -snf "$DOTFILES"/"$f" "$HOME"/"$f"
 done
 
