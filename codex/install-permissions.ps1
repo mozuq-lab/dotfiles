@@ -132,12 +132,22 @@ $lockPath = Join-Path $configDirectory ".config.toml.dotfiles.lock"
 $lockPidPath = Join-Path $lockPath "pid"
 
 function New-ConfigLock {
+    $createdLock = $false
     try {
         New-Item -ItemType Directory -Path $lockPath -ErrorAction Stop | Out-Null
+        $createdLock = $true
         [System.IO.File]::WriteAllText($lockPidPath, [string]$PID)
         return
     }
     catch {
+        if ($createdLock) {
+            Remove-Item -LiteralPath $lockPath -Force -ErrorAction SilentlyContinue
+            throw "Could not write Codex config lock PID: $lockPidPath"
+        }
+        if (-not (Test-Path -LiteralPath $lockPath -PathType Container)) {
+            throw "Could not create Codex config lock directory: $lockPath"
+        }
+
         $lockPid = $null
         if (Test-Path -LiteralPath $lockPidPath -PathType Leaf) {
             $lockPidText = [System.IO.File]::ReadAllText($lockPidPath).Trim()
@@ -218,7 +228,7 @@ try {
             $valuePart = $trimmedLine.Substring($assignmentIndex + 1)
             $normalizedKey = $keyPart.Replace(" ", "").Replace("`t", "").Replace('"', "").Replace("'", "")
 
-            if (-not $seenTable -and $normalizedKey -eq "default_permissions") {
+            if (-not $seenTable -and $normalizedKey -in @("default_permissions", "approval_policy")) {
                 continue
             }
             if ($normalizedKey -match '(^|\.)(sandbox_mode|sandbox_workspace_write)($|\.)') {
@@ -253,6 +263,7 @@ try {
     $fragment = [System.IO.File]::ReadAllText($FragmentPath).Trim($lineEndings)
 
     $result = "default_permissions = `"$profileName`"`n"
+    $result += "approval_policy = `"on-request`"`n"
     if ($existingConfig.Length -gt 0) {
         $result += "`n$existingConfig`n"
     }

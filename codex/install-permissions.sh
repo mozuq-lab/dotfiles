@@ -54,7 +54,9 @@ resolve_write_path() {
 
 config_fingerprint() {
     if [ -e "$CONFIG_PATH" ]; then
-        if command -v shasum >/dev/null 2>&1; then
+        if command -v openssl >/dev/null 2>&1; then
+            openssl dgst -sha256 "$CONFIG_PATH"
+        elif command -v shasum >/dev/null 2>&1; then
             shasum -a 256 "$CONFIG_PATH"
         elif command -v sha256sum >/dev/null 2>&1; then
             sha256sum "$CONFIG_PATH"
@@ -94,9 +96,15 @@ acquire_lock() {
     if mkdir "$LOCK_DIR" 2>/dev/null; then
         if ! printf '%s\n' "$$" > "$LOCK_PID_FILE"; then
             rmdir "$LOCK_DIR" 2>/dev/null || true
+            echo "Could not write Codex config lock PID: $LOCK_PID_FILE" >&2
             return 1
         fi
         return
+    fi
+
+    if [ ! -d "$LOCK_DIR" ]; then
+        echo "Could not create Codex config lock directory: $LOCK_DIR" >&2
+        return 1
     fi
 
     lock_pid=
@@ -182,7 +190,8 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
             normalized_key = key_part
             gsub(/[[:space:]"\047]/, "", normalized_key)
 
-            if (!seen_table && normalized_key == "default_permissions") {
+            if (!seen_table &&
+                (normalized_key == "default_permissions" || normalized_key == "approval_policy")) {
                 next
             }
             if (normalized_key ~ /(^|[.])(sandbox_mode|sandbox_workspace_write)($|[.])/) {
@@ -243,6 +252,7 @@ awk '
 
 {
     printf 'default_permissions = "%s"\n' "$PROFILE_NAME"
+    printf 'approval_policy = "on-request"\n'
     if [ -s "$TRIMMED_CONFIG" ]; then
         printf '\n'
         cat "$TRIMMED_CONFIG"
