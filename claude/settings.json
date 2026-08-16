@@ -2,6 +2,9 @@
   "env": {
     "ENABLE_LSP_TOOL": "1"
   },
+  "attribution": {
+    "sessionUrl": false
+  },
   "permissions": {
     "deny": [
       "Read(**/.env)",
