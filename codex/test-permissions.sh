@@ -48,11 +48,11 @@ assert_fragment_line '"~/.codex/plugins/cache" = "read"'
 assert_fragment_line '"~/.nvm/versions/node" = "read"'
 assert_fragment_line '":tmpdir" = "write"'
 
-# Keep the intentionally narrow profile and its sensitive-path carve-outs.
-assert_fragment_line '":root" = "deny"'
+# Allow ordinary toolchain reads and temporary files while keeping sensitive paths denied.
+assert_fragment_line '":root" = "read"'
 assert_fragment_line '"~/.ssh" = "deny"'
 assert_fragment_line '"~/.aws/credentials" = "deny"'
-assert_fragment_line '":slash_tmp" = "deny"'
+assert_fragment_line '":slash_tmp" = "write"'
 
 REPO_ROOT=$(dirname "$SCRIPT_DIR")
 TEST_DIR=$(mktemp -d "$REPO_ROOT/.codex-permissions-test.XXXXXX")
@@ -233,17 +233,19 @@ fi
 CODEX_HOME="$TEST_DIR" "$CODEX_BIN" features list >/dev/null
 "$CODEX_BIN" --yolo --version >/dev/null
 
-assert_prompt_rule() {
+assert_default_rule() {
     policy_json=$("$CODEX_BIN" execpolicy check --rules "$RULES_FILE" "$@" 2>/dev/null)
-    if ! printf '%s\n' "$policy_json" | grep -Fq '"decision":"prompt"'; then
-        echo "Command is missing its explicit prompt rule: $*" >&2
+    if ! printf '%s\n' "$policy_json" | python3 -c 'import json, sys; result = json.load(sys.stdin); sys.exit(bool(result.get("matchedRules")) or "decision" in result)'; then
+        echo "Routine command unexpectedly overrides the normal approval policy: $*" >&2
         exit 1
     fi
 }
 
-assert_prompt_rule git add README.md
-assert_prompt_rule git commit -m test
-assert_prompt_rule git switch main
+assert_default_rule git add README.md
+assert_default_rule git commit -m test
+assert_default_rule git switch main
+assert_default_rule npm run test:e2e
+assert_default_rule gh auth status
 
 READ_ONLY_DIR="$TEST_DIR/read-only"
 READ_ONLY_ERROR="$TEST_DIR/read-only-error.log"

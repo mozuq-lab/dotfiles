@@ -4,14 +4,28 @@ extends = ":workspace"
 
 [permissions.personal-workspace.filesystem]
 glob_scan_max_depth = 16
-":root" = "deny"
+# 一般のツール・SDK・システム設定は読み取り可能にする。
+":root" = "read"
 ":minimal" = "read"
 ":tmpdir" = "write"
-":slash_tmp" = "deny"
+":slash_tmp" = "write"
 "~/.agents/skills" = "read"
 "~/.codex/skills" = "read"
 "~/.codex/plugins/cache" = "read"
 "~/.nvm/versions/node" = "read"
+# 開発ツールが作業フォルダ外に生成するキャッシュと SDK の更新先。
+"~/.cache" = "write"
+"~/.npm" = "write"
+"~/.pub-cache" = "write"
+"~/.dart-tool" = "write"
+"~/.gradle" = "write"
+"~/fvm" = "write"
+"~/Library/Caches" = "write"
+"~/Library/Android/sdk" = "write"
+"~/Library/Developer/Xcode/DerivedData" = "write"
+"~/Library/Developer/CoreSimulator" = "write"
+"~/.codex/auth.json" = "deny"
+"~/Library/Keychains" = "deny"
 "~/.ssh" = "deny"
 "~/.gnupg" = "deny"
 "~/.aws/credentials" = "deny"
@@ -51,3 +65,6 @@ glob_scan_max_depth = 16
 "**/*.jks" = "deny"
 "**/id_rsa" = "deny"
 "**/id_ed25519" = "deny"
+
+[permissions.personal-workspace.network]
+enabled = true
