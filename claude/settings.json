@@ -43,7 +43,8 @@
       "Read(~/.claude/.credentials.json)",
       "Read(~/.zsh_history)",
       "Read(~/.bash_history)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -91,8 +92,8 @@
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
-    "everything-claude-code@everything-claude-code": true,
-    "tsumiki@tsumiki": true,
+    "everything-claude-code@everything-claude-code": false,
+    "tsumiki@tsumiki": false,
     "skill-creator@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
@@ -104,7 +105,11 @@
     "php-lsp@claude-plugins-official": true,
     "dart-lsp@local-lsp": true,
     "frontend-design@claude-plugins-official": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "natural-japanese@natural-japanese": true,
+    "swift-lsp@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -130,13 +135,29 @@
         "source": "github",
         "repo": "openai/codex-plugin-cc"
       }
+    },
+    "natural-japanese": {
+      "source": {
+        "source": "github",
+        "repo": "coji/natural-japanese"
+      }
     }
   },
   "language": "Japanese",
   "effortLevel": "xhigh",
+  "modelSettings": {
+    "gemma4:12b-mlx": {
+      "effortLevel": "low"
+    },
+    "claude-opus-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
+  "editorMode": "vim",
   "agentPushNotifEnabled": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "model": "claude-fable-5-1[1m]"
 }
