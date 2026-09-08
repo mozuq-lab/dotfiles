@@ -25,7 +25,6 @@ glob_scan_max_depth = 16
 "~/Library/Developer/Xcode/DerivedData" = "write"
 "~/Library/Developer/CoreSimulator" = "write"
 "~/.codex/auth.json" = "deny"
-"~/Library/Keychains" = "deny"
 "~/.ssh" = "deny"
 "~/.gnupg" = "deny"
 "~/.aws/credentials" = "deny"

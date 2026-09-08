@@ -296,7 +296,8 @@ awk -v begin_marker="$BEGIN_MARKER" -v end_marker="$END_MARKER" -v profile_name=
             gsub(/[[:space:]"\047]/, "", normalized_key)
 
             if (!seen_table &&
-                (normalized_key == "default_permissions" || normalized_key == "approval_policy")) {
+                (normalized_key == "default_permissions" || normalized_key == "approval_policy" ||
+                 normalized_key == "approvals_reviewer")) {
                 multiline_string = next_multiline_string
                 discard_multiline_string = multiline_string != ""
                 next
@@ -362,6 +363,7 @@ awk '
 {
     printf 'default_permissions = "%s"\n' "$PROFILE_NAME"
     printf 'approval_policy = "on-request"\n'
+    printf 'approvals_reviewer = "auto_review"\n'
     if [ -s "$TRIMMED_CONFIG" ]; then
         printf '\n'
         cat "$TRIMMED_CONFIG"

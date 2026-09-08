@@ -82,20 +82,23 @@ LSP・補完・リントは coc.nvim に集約している。拡張は `g:coc_gl
   ディレクトリ丸ごとリンクしないこと（セッション履歴・認証情報などの状態ファイルが同居しているため）
 - Codex の `hooks.json` と `rules/default.rules` はリンクし、通常利用する権限プロファイル
   `personal-workspace` は `codex/permissions.toml` の内容を既存の `~/.codex/config.toml` へマージする。
+  `default_permissions`・`approval_policy`・`approvals_reviewer` もセットアップが管理する。
   モデル・プラグイン・プロジェクト信頼設定など、Codex が管理する既存項目は保持される
 - Codex の権限プロファイルは Codex 0.138.0 以降が必要。旧式の `sandbox_mode` または
   `[sandbox_workspace_write]` が `~/.codex/config.toml` に残っている場合、競合を避けるためセットアップは停止する
-- 通常の `codex` 起動では `approval_policy = "on-request"` を使い、`git add` と `git commit` は
-  明示的に承認を求める。承認後にGit操作を完了できるよう、ワークスペース内の `.git` は
-  書き込み可能とするが、追加のセッション用権限プロファイルは作成しない
+- 通常の `codex` 起動では `approval_policy = "on-request"` と
+  `approvals_reviewer = "auto_review"` を使い、対象となる承認要求は自動レビューに委ねる。
+  日常の Git 操作・テスト・認証状態の確認には一律の承認ルールを追加せず、
+  ワークスペース内の `.git` は書き込み可能とする
 - 承認と sandbox の両方を意図的に外すセッションだけ `codex --yolo` で起動する。
   これは秘密情報へのdenyを含むローカル保護を迂回するため、信頼できる作業に限定する
-- Codex はワークスペース外のファイルを既定で読み取れないようにし、実行に必要な
-  `:minimal`、スタンドアロン・プラグイン配布のスキル、NVM 配下の実行環境のみ読み取りを許可する。
-  ユーザー専用の `TMPDIR` はビルド・テスト用に書き込み可能とするが、共有の `/tmp` は拒否する。
+- Codex は `:root = "read"` で一般のツール・SDK・システム設定の読み取りを許可し、
+  認証情報・秘密鍵・ワークスペース内の `.env` などは明示的なdenyで保護する。
+  ユーザー専用の `TMPDIR` と共有の `/tmp`、開発ツールのキャッシュ・SDK更新先は書き込み可能とする。
+  スキルは読み取りのみとする。
   権限プロファイルはsandbox内のローカルコマンドに適用され、ユーザーまたは自動レビューが
   承認したsandbox外実行には適用されない
-- `.git` の書き込み許可はGit以外のコマンドにも適用されるため、Codexの実行内容は承認画面で確認する
+- `.git` の書き込み許可はGit以外のコマンドにも適用されるため、Codexの実行履歴と差分を確認する
 - 権限設定の更新前に `~/.codex/config.toml.dotfiles-backup` を作成する。
   更新前後の指紋比較で既存設定との競合を検知した場合は、上書きせず停止する。
   排他ロックにはプロセス ID を記録し、異常終了後の古いロックは次回実行時に回収する

@@ -340,7 +340,7 @@ try {
             $valuePart = $trimmedLine.Substring($assignmentIndex + 1)
             $normalizedKey = $keyPart.Replace(" ", "").Replace("`t", "").Replace('"', "").Replace("'", "")
 
-            if (-not $seenTable -and $normalizedKey -in @("default_permissions", "approval_policy")) {
+            if (-not $seenTable -and $normalizedKey -in @("default_permissions", "approval_policy", "approvals_reviewer")) {
                 $multilineStringState = $nextMultilineStringState
                 $discardMultilineString = $multilineStringState.Length -gt 0
                 continue
@@ -380,6 +380,7 @@ try {
 
     $result = "default_permissions = `"$profileName`"`n"
     $result += "approval_policy = `"on-request`"`n"
+    $result += "approvals_reviewer = `"auto_review`"`n"
     if ($existingConfig.Length -gt 0) {
         $result += "`n$existingConfig`n"
     }

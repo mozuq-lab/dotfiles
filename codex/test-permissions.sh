@@ -29,9 +29,9 @@ assert_preserved_config_block() {
     description=$3
     extracted_path=$4
     original_line_count=$(wc -l < "$original_path")
-    original_end_line=$((3 + original_line_count))
+    original_end_line=$((4 + original_line_count))
 
-    sed -n "4,${original_end_line}p" "$installed_path" > "$extracted_path"
+    sed -n "5,${original_end_line}p" "$installed_path" > "$extracted_path"
     if ! cmp -s "$original_path" "$extracted_path"; then
         echo "Installer did not preserve $description byte-for-byte." >&2
         return 1
@@ -62,20 +62,24 @@ CONFIG_PATH="$TEST_DIR/config.toml"
 ORIGINAL_CONFIG="$TEST_DIR/original.toml"
 FIRST_CONFIG="$TEST_DIR/first.toml"
 
-printf '%s\n' 'model = "gpt-5.6"' 'approval_policy = "never"' > "$CONFIG_PATH"
+printf '%s\n' \
+    'model = "gpt-5.6"' \
+    'approval_policy = "never"' \
+    'approvals_reviewer = "user"' > "$CONFIG_PATH"
 cp "$CONFIG_PATH" "$ORIGINAL_CONFIG"
 
 bash "$INSTALLER" "$CONFIG_PATH" "$PERMISSIONS_FRAGMENT" >/dev/null
 cmp -s "$ORIGINAL_CONFIG" "$CONFIG_PATH.dotfiles-backup"
 cp "$CONFIG_PATH" "$FIRST_CONFIG"
 
-# The installed config asks for approvals and keeps a single managed profile.
+# The installed config routes eligible approvals to automatic review and keeps a single managed profile.
 # Users can explicitly launch `codex --yolo` when they intend to bypass both
 # approvals and the sandbox for that session.
 assert_file_line "$CONFIG_PATH" 'default_permissions = "personal-workspace"'
 assert_file_line "$CONFIG_PATH" '[permissions.personal-workspace]'
 assert_file_line "$CONFIG_PATH" 'description = "Personal workspace access with sensitive files denied."'
 assert_file_line "$CONFIG_PATH" 'approval_policy = "on-request"'
+assert_file_line "$CONFIG_PATH" 'approvals_reviewer = "auto_review"'
 assert_file_line "$CONFIG_PATH" '".git" = "write"'
 assert_file_line "$CONFIG_PATH" '"~/.ssh" = "deny"'
 if grep -Fq '[permissions.dotfiles-workspace' "$CONFIG_PATH"; then
@@ -106,6 +110,7 @@ bash "$INSTALLER" "$MIGRATION_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null
 cmp -s "$MIGRATION_ORIGINAL" "$MIGRATION_CONFIG.dotfiles-backup"
 assert_file_line "$MIGRATION_CONFIG" 'model = "gpt-5.6"'
 assert_file_line "$MIGRATION_CONFIG" 'default_permissions = "personal-workspace"'
+assert_file_line "$MIGRATION_CONFIG" 'approvals_reviewer = "auto_review"'
 assert_file_line "$MIGRATION_CONFIG" '[permissions.personal-workspace]'
 if grep -Fq '[permissions.dotfiles-workspace' "$MIGRATION_CONFIG"; then
     echo "Migration left the old managed profile in place." >&2
@@ -141,6 +146,7 @@ BASIC_STRING_ERROR="$TEST_DIR/multiline-basic-error.log"
 printf '%s\n' \
     'basic_note = """' \
     'approval_policy = "never"' \
+    'approvals_reviewer = "user"' \
     '# >>> dotfiles managed Codex permissions >>>' \
     'sandbox_mode = "danger-full-access"' \
     '[permissions.personal-workspace]' \
@@ -167,6 +173,7 @@ LITERAL_STRING_ERROR="$TEST_DIR/multiline-literal-error.log"
 printf '%s\n' \
     "literal_note = '''" \
     'default_permissions = "other"' \
+    'approvals_reviewer = "user"' \
     '# <<< dotfiles managed Codex permissions <<<' \
     'sandbox_workspace_write = true' \
     'permissions.personal-workspace = { extends = ":workspace" }' \
@@ -195,7 +202,9 @@ printf '%s\n' \
     '[projects."/Users/me/personal-workspace"]' \
     'trust_level = "trusted"' \
     '["permissions.personal-workspace"]' \
-    'owner = "user"' > "$UNRELATED_TABLE_CONFIG"
+    'owner = "user"' \
+    '[profiles.manual]' \
+    'approvals_reviewer = "user"' > "$UNRELATED_TABLE_CONFIG"
 cp "$UNRELATED_TABLE_CONFIG" "$UNRELATED_TABLE_ORIGINAL"
 if bash "$INSTALLER" "$UNRELATED_TABLE_CONFIG" "$PERMISSIONS_FRAGMENT" >/dev/null 2>"$UNRELATED_TABLE_ERROR"; then
     if ! assert_preserved_config_block \
