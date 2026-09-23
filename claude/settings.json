@@ -1,6 +1,7 @@
 {
   "env": {
-    "ENABLE_LSP_TOOL": "1"
+    "ENABLE_LSP_TOOL": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "attribution": {
     "sessionUrl": false
@@ -49,38 +50,6 @@
   "hooks": {
     "SessionStart": [
       {
-        "hooks": []
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": []
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": []
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": []
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "*",
-        "hooks": []
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "matcher": "*",
-        "hooks": []
-      }
-    ],
-    "PermissionRequest": [
-      {
         "matcher": "*",
         "hooks": []
       }
@@ -92,24 +61,24 @@
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
-    "everything-claude-code@everything-claude-code": false,
-    "tsumiki@tsumiki": false,
-    "skill-creator@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
-    "dart-lsp@local-lsp": true,
-    "frontend-design@claude-plugins-official": true,
     "codex@openai-codex": true,
-    "natural-japanese@natural-japanese": true,
-    "swift-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "dart-lsp@local-lsp": true,
+    "everything-claude-code@everything-claude-code": false,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
     "mattpocock-skills@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true
+    "natural-japanese@natural-japanese": true,
+    "php-lsp@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "tsumiki@tsumiki": false,
+    "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -118,16 +87,16 @@
         "repo": "affaan-m/everything-claude-code"
       }
     },
-    "tsumiki": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/classmethod/tsumiki.git"
-      }
-    },
     "local-lsp": {
       "source": {
         "source": "directory",
         "path": "/Users/owner/.claude/local-plugins/dart-lsp"
+      }
+    },
+    "natural-japanese": {
+      "source": {
+        "source": "github",
+        "repo": "coji/natural-japanese"
       }
     },
     "openai-codex": {
@@ -136,10 +105,10 @@
         "repo": "openai/codex-plugin-cc"
       }
     },
-    "natural-japanese": {
+    "tsumiki": {
       "source": {
-        "source": "github",
-        "repo": "coji/natural-japanese"
+        "source": "git",
+        "url": "https://github.com/classmethod/tsumiki.git"
       }
     }
   },
@@ -149,8 +118,15 @@
     "gemma4:12b-mlx": {
       "effortLevel": "low"
     },
-    "claude-opus-5": {
-      "effortLevel": "xhigh"
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "pluginConfigs": {
+    "agents-md@builtin": {
+      "options": {
+        "instructionFiles": "claude-md-and-agents-md"
+      }
     }
   },
   "tui": "fullscreen",
